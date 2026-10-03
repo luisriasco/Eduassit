@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSuite - Centro de Herramientas y Asistente Estudiantil</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                            accent: '#8b5cf6',
+                            emerald: '#10b981',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.6);
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .dark .glass-panel {
+            background: rgba(17, 24, 39, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .light .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Progress ring animation */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row antialiased selection:bg-indigo-500 selection:text-white dark:bg-slate-950 dark:text-slate-100 light:bg-slate-50 light:text-slate-900">
+
+    <!-- Overlay Móvil -->
+    <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden backdrop-blur-sm"></div>
+
+    <!-- Sidebar / Menú Lateral -->
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-slate-900/95 dark:bg-slate-900/95 light:bg-white border-r border-slate-800 dark:border-slate-800 light:border-slate-200 flex-shrink-0 flex flex-col justify-between z-40 transition-transform duration-300 transform -translate-x-full md:translate-x-0">
+        <div>
+            <!-- Logo Header -->
+            <div class="p-6 border-b border-slate-800 dark:border-slate-800 light:border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg tracking-wide bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">EduSuite</h1>
+                        <p class="text-[10px] text-indigo-400 font-semibold tracking-wider uppercase">Plataforma Estudiantil</p>
+                    </div>
+                </div>
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Navegación Principal -->
+            <nav class="p-4 space-y-2">
+                <p class="text-[10px] uppercase font-extrabold text-slate-500 px-3 tracking-wider mb-2">Módulos Principales</p>
+                
+                <button onclick="switchTab('tab-assistant')" id="nav-tab-assistant" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-base w-5"></i>
+                    <span>Asistente de Tareas</span>
+                </button>
+
+                <button onclick="switchTab('tab-tools')" id="nav-tab-tools" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/60 dark:hover:bg-slate-800/60 light:hover:bg-slate-100 hover:text-white dark:hover:text-white light:hover:text-slate-900">
+                    <i class="fa-solid fa-toolbox text-base w-5"></i>
+                    <span>Suite de Herramientas</span>
+                </button>
+
+                <button onclick="switchTab('tab-kanban')" id="nav-tab-kanban" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/60 dark:hover:bg-slate-800/60 light:hover:bg-slate-100 hover:text-white dark:hover:text-white light:hover:text-slate-900">
+                    <i class="fa-solid fa-kanban text-base w-5"></i>
+                    <span>Tablero Kanban</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer del Sidebar & Toggle Tema -->
+        <div class="p-4 border-t border-slate-800 dark:border-slate-800 light:border-slate-200 space-y-3">
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/40 dark:bg-slate-800/40 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200">
+                <span class="text-xs font-semibold text-slate-400 dark:text-slate-400 light:text-slate-600 px-2 flex items-center gap-2">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    <span id="themeLabel">Modo Oscuro</span>
+                </span>
+                <button onclick="toggleDarkMode()" class="w-10 h-6 bg-indigo-600 rounded-full p-0.5 transition-colors focus:outline-none flex items-center">
+                    <div id="themeToggleBall" class="w-5 h-5 bg-white rounded-full shadow-md transform translate-x-4 transition-transform duration-200"></div>
+                </button>
+            </div>
+
+            <div class="bg-slate-800/40 dark:bg-slate-800/40 light:bg-slate-100 rounded-xl p-3 border border-slate-800 dark:border-slate-800 light:border-slate-200 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center font-bold text-xs border border-indigo-500/30">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold text-slate-200 dark:text-slate-200 light:text-slate-800 truncate">Persistencia Local</p>
+                    <p class="text-[10px] text-emerald-400 font-medium truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Sincronizado
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+
+        <!-- Top Bar Header Header -->
+        <header class="bg-slate-900/60 dark:bg-slate-900/60 light:bg-white/80 border-b border-slate-800 dark:border-slate-800 light:border-slate-200 px-6 py-4 flex items-center justify-between gap-4 backdrop-blur-md sticky top-0 z-20">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white dark:hover:text-white light:hover:text-slate-900 p-1">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="text-lg font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2">
+                        Panel Estudiantil Integrado <span class="text-xs font-normal text-slate-400">v2.0</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 dark:text-slate-400 light:text-slate-500">Herramientas de investigación, cálculo y productividad.</p>
+                </div>
+            </div>
+
+            <!-- Widget de Reloj en Vivo -->
+            <div class="hidden sm:flex items-center gap-3 bg-slate-800/50 dark:bg-slate-800/50 light:bg-slate-100 border border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 px-4 py-2 rounded-xl">
+                <i class="fa-regular fa-clock text-indigo-400 text-base"></i>
+                <div class="flex flex-col text-right">
+                    <span id="liveClock" class="font-bold text-xs text-white dark:text-white light:text-slate-800 tracking-wider font-mono">--:--:--</span>
+                    <span id="liveDate" class="text-[10px] text-slate-400">Cargando fecha...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Container -->
+        <main class="p-4 sm:p-6 md:p-8 flex-1 space-y-8">
+
+            <!-- PESTAÑA 1: ASISTENTE DE INVESTIGACIÓN -->
+            <section id="tab-assistant" class="tab-content space-y-8">
+                <div>
+                    <h3 class="text-2xl font-extrabold text-white dark:text-white light:text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <i class="fa-solid fa-brain text-indigo-400"></i> Asistente de Investigación e Esquemas
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 mt-1">
+                        Genera guías estructurales para tus proyectos académicos y almacena tus fichas de referencias con guardado automático.
+                    </p>
+                </div>
+
+                <!-- Sección: Generador de Esquemas -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Formulario -->
+                    <div class="lg:col-span-5 glass-panel rounded-2xl p-6 border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-xl space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-3">
+                            <h4 class="text-sm font-bold text-indigo-400 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders"></i> Configurar Trabajo
+                            </h4>
+                            <span class="text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/20">Generador</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">Tema Principal de Investigación *</label>
+                                <input type="text" id="aiTopic" placeholder="Ej: Las energías renovables en la industria alimentaria" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-4 py-2.5 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">Nivel Educativo</label>
+                                    <select id="aiLevel" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2.5 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500 transition-colors">
+                                        <option value="Secundaria / Bachillerato">Secundaria</option>
+                                        <option value="Pregrado Universitario" selected>Universidad</option>
+                                        <option value="Técnico / Tecnológico">Técnico/Tecnológico</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">Tipo de Trabajo</label>
+                                    <select id="aiFormat" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2.5 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500 transition-colors">
+                                        <option value="Ensayo Académico">Ensayo Académico</option>
+                                        <option value="Informe de Investigación">Informe Completo</option>
+                                        <option value="Guía para Exposición">Guía Exposición</option>
+                                        <option value="Artículo de Opinión">Artículo Corto</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">Subtemas o Enfoques Particulares (Opcional)</label>
+                                <textarea id="aiKeywords" rows="3" placeholder="Ej: Impacto económico, huella de carbono, tecnologías limpias..." class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl p-3 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"></textarea>
+                            </div>
+
+                            <button onclick="generateStudyOutline()" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 text-xs transition-all duration-200">
+                                <i class="fa-solid fa-bolt"></i> Generar Esquema
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Panel de Resultados -->
+                    <div class="lg:col-span-7 glass-panel rounded-2xl p-6 border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
+                                <h4 class="text-sm font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-lines text-indigo-400"></i> Estructura Sugerida
+                                </h4>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="saveOutlineAsSource()" id="btnSaveOutline" class="hidden text-xs bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-600/30 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
+                                        <i class="fa-regular fa-bookmark"></i> Guardar como Ficha
+                                    </button>
+                                    <button onclick="copyToClipboard('aiOutputResult')" id="btnCopyOutline" class="hidden text-xs bg-slate-800 dark:bg-slate-800 light:bg-slate-200 hover:bg-slate-700 text-slate-300 dark:text-slate-300 light:text-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
+                                        <i class="fa-regular fa-copy"></i> Copiar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="aiOutputPlaceholder" class="py-20 text-center space-y-3">
+                                <div class="w-16 h-16 mx-auto rounded-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-200 flex items-center justify-center text-slate-500 text-2xl">
+                                    <i class="fa-solid fa-compass-drafting"></i>
+                                </div>
+                                <p class="text-xs text-slate-400 dark:text-slate-400 light:text-slate-500 max-w-xs mx-auto">
+                                    Diligencia los datos del formulario para estructurar los apartados, preguntas de análisis y conclusiones de tu investigación.
+                                </p>
+                            </div>
+
+                            <div id="aiOutputResult" class="hidden space-y-4 text-xs text-slate-300 dark:text-slate-300 light:text-slate-700 overflow-y-auto max-h-[460px] pr-2">
+                                <!-- Generado por JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Gestor de Fichas de Referencia / Fuentes -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-xl space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-4">
+                        <div>
+                            <h4 class="text-base font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-book-bookmark text-indigo-400"></i> Gestor de Fichas de Referencia y Fuentes
+                            </h4>
+                            <p class="text-xs text-slate-400 dark:text-slate-400 light:text-slate-500">Guarda citas, notas breves y enlaces web de tus lecturas.</p>
+                        </div>
+
+                        <!-- Filtro por Materia -->
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-semibold text-slate-400">Filtrar por Materia:</label>
+                            <select id="filterSubject" onchange="renderSources()" class="bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-1.5 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                                <option value="TODAS">Todas las materias</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Formulario Crear Ficha -->
+                        <div class="lg:col-span-4 bg-slate-900/60 dark:bg-slate-900/60 light:bg-slate-50 p-4 rounded-xl border border-slate-800 dark:border-slate-800 light:border-slate-200 space-y-3">
+                            <h5 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Nueva Ficha</h5>
+                            
+                            <div>
+                                <input type="text" id="sourceTitle" placeholder="Título de la fuente o nota *" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-white border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-lg px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <input type="text" id="sourceSubject" placeholder="Materia (Ej: Biología, Historia)" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-white border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-lg px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <textarea id="sourceContent" rows="3" placeholder="Contenido o Cita Textual..." class="w-full bg-slate-800 dark:bg-slate-800 light:bg-white border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-lg p-3 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500"></textarea>
+                            </div>
+                            <div>
+                                <input type="url" id="sourceUrl" placeholder="URL o Referencia Web (Opcional)" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-white border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-lg px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                            </div>
+
+                            <button onclick="addSource()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 rounded-lg text-xs transition-colors">
+                                Guardar Ficha
+                            </button>
+                        </div>
+
+                        <!-- Grid de Fichas -->
+                        <div class="lg:col-span-8">
+                            <div id="sourcesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[380px] overflow-y-auto pr-1">
+                                <!-- Cards injected dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PESTAÑA 2: SUITE DE HERRAMIENTAS -->
+            <section id="tab-tools" class="tab-content space-y-8 hidden">
+                <div>
+                    <h3 class="text-2xl font-extrabold text-white dark:text-white light:text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <i class="fa-solid fa-toolbox text-indigo-400"></i> Suite de Herramientas Estudiantes
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 mt-1">
+                        Calcula promedios académicos, gestiona sesiones Pomodoro y formatea citas en norma APA 7ª Edición.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- HERRAMIENTA 1: Calculadora de Promedios y Ponderaciones -->
+                    <div class="glass-panel rounded-2xl p-6 border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-xl flex flex-col justify-between space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
+                                <h4 class="font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-calculator text-indigo-400"></i> Calculadora de Promedio
+                                </h4>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Cortes %</span>
+                            </div>
+
+                            <p class="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600">
+                                Ingresa notas (0 a 5.0) con sus respectivos porcentajes acumulados.
+                            </p>
+
+                            <!-- Lista Dinámica de Notas -->
+                            <div id="gradesContainer" class="space-y-2 max-h-52 overflow-y-auto pr-1">
+                                <!-- Filas de notas por JS -->
+                            </div>
+
+                            <button onclick="addGradeRow()" class="w-full py-2 border border-dashed border-slate-700 dark:border-slate-700 light:border-slate-300 hover:border-indigo-500 rounded-xl text-xs text-slate-400 hover:text-indigo-400 flex items-center justify-center gap-2 transition-colors">
+                                <i class="fa-solid fa-plus"></i> Agregar Fila de Nota
+                            </button>
+                        </div>
+
+                        <!-- Resultado y Nota Requerida -->
+                        <div class="pt-4 border-t border-slate-800 dark:border-slate-800 light:border-slate-200 space-y-3">
+                            <div id="gradeAlertBox" class="bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 p-3.5 rounded-xl border border-slate-800 dark:border-slate-800 light:border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] text-slate-400">Promedio Ponderado</p>
+                                    <span id="calculatedAverage" class="text-2xl font-black text-white dark:text-white light:text-slate-900">0.00</span>
+                                </div>
+                                <div id="averageStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400">
+                                    Sin datos
+                                </div>
+                            </div>
+
+                            <div id="requiredGradeText" class="text-[11px] text-slate-400 text-center font-medium">
+                                Cobertura total de porcentaje: <span id="totalWeightSpan" class="font-bold text-indigo-400">0%</span>
+                            </div>
+
+                            <button onclick="calculateGrades()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-xs transition-colors">
+                                Calcular Promedio
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- HERRAMIENTA 2: Temporizador Pomodoro -->
+                    <div class="glass-panel rounded-2xl p-6 border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-xl flex flex-col justify-between space-y-5 text-center">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200 text-left">
+                                <h4 class="font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-stopwatch text-indigo-400"></i> Temporizador Pomodoro
+                                </h4>
+                                <span id="pomodoroState" class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Modo Estudio</span>
+                            </div>
+
+                            <!-- Reloj Circular Visual -->
+                            <div class="relative w-40 h-40 mx-auto flex items-center justify-center">
+                                <svg class="w-full h-full" viewBox="0 0 100 100">
+                                    <circle class="text-slate-800 dark:text-slate-800 light:text-slate-200" stroke-width="6" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"/>
+                                    <circle id="timerProgressCircle" class="progress-ring__circle text-indigo-500" stroke-width="6" stroke-dasharray="263.89" stroke-dashoffset="0" stroke-linecap="round" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"/>
+                                </svg>
+                                <div class="absolute flex flex-col items-center">
+                                    <span id="timerDisplay" class="text-3xl font-black text-white dark:text-white light:text-slate-900 font-mono tracking-wider">25:00</span>
+                                    <span id="cycleCounter" class="text-[10px] text-slate-400 mt-1 font-semibold">Ciclos: 0/4</span>
+                                </div>
+                            </div>
+
+                            <!-- Botones Selección de Modo -->
+                            <div class="flex justify-center gap-2">
+                                <button onclick="setTimerMode('study')" id="btnTimerStudy" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white">Estudio (25m)</button>
+                                <button onclick="setTimerMode('break')" id="btnTimerBreak" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-400 hover:text-white">Descanso (5m)</button>
+                            </div>
+                        </div>
+
+                        <!-- Controles del Cronómetro -->
+                        <div class="pt-4 border-t border-slate-800 dark:border-slate-800 light:border-slate-200 flex gap-2">
+                            <button onclick="toggleTimer()" id="btnStartTimer" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors">
+                                <i class="fa-solid fa-play"></i> Iniciar
+                            </button>
+                            <button onclick="resetTimer()" class="bg-slate-800 dark:bg-slate-800 light:bg-slate-200 hover:bg-slate-700 text-slate-300 dark:text-slate-300 light:text-slate-700 font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- HERRAMIENTA 3: Generador Citas APA 7ª Edición -->
+                    <div class="glass-panel rounded-2xl p-6 border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-xl flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
+                                <h4 class="font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-quote-right text-indigo-400"></i> Generador APA 7ª Edición
+                                </h4>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">Citas</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <input type="text" id="apaAuthor" placeholder="Autor/es (Ej: García Márquez, G.)" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                                <input type="text" id="apaYear" placeholder="Año (Ej: 1967)" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                                <input type="text" id="apaTitle" placeholder="Título del libro o artículo" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                                <input type="text" id="apaPublisher" placeholder="Editorial o Nombre del Sitio Web" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                                <input type="text" id="apaUrl" placeholder="URL o DOI (Opcional)" class="w-full bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3 py-2 text-xs text-white dark:text-white light:text-slate-900 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 pt-2">
+                            <div id="apaResultBox" class="p-3 bg-slate-900/90 dark:bg-slate-900/90 light:bg-slate-100 rounded-xl border border-slate-800 dark:border-slate-800 light:border-slate-200 text-xs italic text-slate-300 dark:text-slate-300 light:text-slate-700 min-h-[50px] flex items-center">
+                                Diligencia los campos para obtener el formato APA estandarizado.
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="generateAPACitation()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 rounded-xl text-xs transition-colors">
+                                    Generar Cita
+                                </button>
+                                <button onclick="copyToClipboard('apaResultBox')" class="bg-slate-800 dark:bg-slate-800 light:bg-slate-200 hover:bg-slate-700 text-slate-300 dark:text-slate-300 light:text-slate-700 px-3 py-2 rounded-xl text-xs transition-colors">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PESTAÑA 3: TABLERO KANBAN -->
+            <section id="tab-kanban" class="tab-content space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-white dark:text-white light:text-slate-900 tracking-tight flex items-center gap-2.5">
+                            <i class="fa-solid fa-kanban text-indigo-400"></i> Tablero Organizador Kanban
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 mt-1">
+                            Organiza entregas académicas, talleres y exámenes. Arrastra las tarjetas o muévelas con un clic.
+                        </p>
+                    </div>
+                    <button onclick="openAddTaskModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all self-start sm:self-auto">
+                        <i class="fa-solid fa-plus"></i> Nueva Tarea
+                    </button>
+                </div>
+
+                <!-- Columnas Kanban -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Columna: Por Hacer -->
+                    <div class="glass-panel rounded-2xl p-4 border border-slate-800 dark:border-slate-800 light:border-slate-200 flex flex-col h-[540px]">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <h4 class="font-bold text-sm text-slate-200 dark:text-slate-200 light:text-slate-800">Por Hacer</h4>
+                            </div>
+                            <span id="count-todo" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-400 font-bold">0</span>
+                        </div>
+                        <div id="col-todo" ondrop="drop(event, 'todo')" ondragover="allowDrop(event)" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+
+                    <!-- Columna: En Proceso -->
+                    <div class="glass-panel rounded-2xl p-4 border border-slate-800 dark:border-slate-800 light:border-slate-200 flex flex-col h-[540px]">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+                                <h4 class="font-bold text-sm text-slate-200 dark:text-slate-200 light:text-slate-800">En Proceso</h4>
+                            </div>
+                            <span id="count-in_progress" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-400 font-bold">0</span>
+                        </div>
+                        <div id="col-in_progress" ondrop="drop(event, 'in_progress')" ondragover="allowDrop(event)" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+
+                    <!-- Columna: Completado -->
+                    <div class="glass-panel rounded-2xl p-4 border border-slate-800 dark:border-slate-800 light:border-slate-200 flex flex-col h-[540px]">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <h4 class="font-bold text-sm text-slate-200 dark:text-slate-200 light:text-slate-800">Completado</h4>
+                            </div>
+                            <span id="count-done" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-400 font-bold">0</span>
+                        </div>
+                        <div id="col-done" ondrop="drop(event, 'done')" ondragover="allowDrop(event)" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal: Crear Tarea Kanban -->
+    <div id="addTaskModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-slate-900 dark:bg-slate-900 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-2xl p-6 max-w-md w-full space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 dark:border-slate-800 light:border-slate-200 pb-3">
+                <h4 class="text-base font-bold text-white dark:text-white light:text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-plus text-indigo-400"></i> Crear Nueva Tarea
+                </h4>
+                <button onclick="closeAddTaskModal()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1">Título de la Tarea *</label>
+                    <input type="text" id="taskTitle" placeholder="Ej: Entregar informe de laboratorio" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3.5 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1">Asignatura</label>
+                        <input type="text" id="taskSubject" placeholder="Ej: Química" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3.5 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1">Prioridad</label>
+                        <select id="taskPriority" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3.5 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                            <option value="Baja">Baja</option>
+                            <option value="Media" selected>Media</option>
+                            <option value="Alta">Alta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1">Fecha Límite</label>
+                    <input type="date" id="taskDueDate" class="w-full bg-slate-800 dark:bg-slate-800 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-3.5 py-2 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-800 dark:border-slate-800 light:border-slate-200">
+                <button onclick="closeAddTaskModal()" class="px-4 py-2 rounded-xl text-xs text-slate-400 hover:text-white">Cancelar</button>
+                <button onclick="saveNewTask()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2 rounded-xl text-xs">Guardar Tarea</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-indigo-600 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-10 pointer-events-none z-50">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMessage">Notificación</span>
+    </div>
+
+    <script>
+        /* ----------------------------------------------------
+           1. ESTADO GLOBAL & PERSISTENCIA LOCALSTORAGE
+        ---------------------------------------------------- */
+        let state = {
+            tasks: JSON.parse(localStorage.getItem('edusuite_tasks')) || [
+                { id: '1', title: 'Ensayo sobre desarrollo sostenible', subject: 'Ecología', priority: 'Alta', status: 'todo', dueDate: '2026-10-15' },
+                { id: '2', title: 'Taller de derivadas complejas', subject: 'Cálculo', priority: 'Media', status: 'in_progress', dueDate: '2026-10-10' },
+                { id: '3', title: 'Exposición de Historia Moderna', subject: 'Historia', priority: 'Baja', status: 'done', dueDate: '2026-10-02' }
+            ],
+            sources: JSON.parse(localStorage.getItem('edusuite_sources')) || [
+                { id: 's1', title: 'Informe de Transición Energética', subject: 'Ecología', content: 'Las energías renovables alcanzaron un 30% de la matriz global en 2025.', url: 'https://ejemplo.org/informe' }
+            ],
+            darkMode: localStorage.getItem('edusuite_theme') !== 'light'
+        };
+
+        let currentGeneratedOutline = null;
+
+        // Inicialización
+        window.onload = function() {
+            applyTheme();
+            startLiveClock();
+            renderSources();
+            renderKanban();
+            
+            // Fila inicial de notas
+            addGradeRow('Corte 1', 4.0, 30);
+            addGradeRow('Corte 2', 3.5, 30);
+            addGradeRow('Examen Final', '', 40);
+            calculateGrades();
+        };
+
+        // Reloj en tiempo real
+        function startLiveClock() {
+            function update() {
+                const now = new Date();
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString('es-CO');
+                const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+                document.getElementById('liveDate').innerText = now.toLocaleDateString('es-CO', options);
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        // Cambio de Modo Oscuro / Claro
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            localStorage.setItem('edusuite_theme', state.darkMode ? 'dark' : 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const html = document.documentElement;
+            const ball = document.getElementById('themeToggleBall');
+            const label = document.getElementById('themeLabel');
+            const icon = document.getElementById('themeIcon');
+
+            if (state.darkMode) {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                ball.style.transform = 'translateX(16px)';
+                label.innerText = 'Modo Oscuro';
+                icon.className = 'fa-solid fa-moon';
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                ball.style.transform = 'translateX(0px)';
+                label.innerText = 'Modo Claro';
+                icon.className = 'fa-solid fa-sun';
+            }
+        }
+
+        // Navegación Pestañas (SPA)
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-indigo-400', 'bg-indigo-500/10', 'border', 'border-indigo-500/20');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-indigo-400', 'bg-indigo-500/10', 'border', 'border-indigo-500/20');
+                activeBtn.classList.remove('text-slate-400');
+            }
+
+            // Ocultar menú móvil si está abierto
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        /* ----------------------------------------------------
+           2. ASISTENTE DE INVESTIGACIÓN & GESTOR DE FUENTES
+        ---------------------------------------------------- */
+        function generateStudyOutline() {
+            const topic = document.getElementById('aiTopic').value.trim();
+            const level = document.getElementById('aiLevel').value;
+            const format = document.getElementById('aiFormat').value;
+            const keywords = document.getElementById('aiKeywords').value.trim();
+
+            if (!topic) {
+                showToast('Ingresa el tema de investigación', 'error');
+                return;
+            }
+
+            const outputBox = document.getElementById('aiOutputResult');
+            const placeholder = document.getElementById('aiOutputPlaceholder');
+            const btnSave = document.getElementById('btnSaveOutline');
+            const btnCopy = document.getElementById('btnCopyOutline');
+
+            placeholder.classList.add('hidden');
+            outputBox.classList.remove('hidden');
+            btnSave.classList.remove('hidden');
+            btnCopy.classList.remove('hidden');
+
+            const contentHtml = `
+                <div class="space-y-4">
+                    <div class="bg-indigo-950/40 border border-indigo-800/50 p-3.5 rounded-xl">
+                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">${level} • ${format}</span>
+                        <h4 class="text-sm font-bold text-white mt-0.5">${topic}</h4>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <h5 class="font-bold text-indigo-400 text-[11px] uppercase tracking-wider mb-1">1. Introducción y Contextualización</h5>
+                            <p class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs leading-relaxed">
+                                Definición de <strong>${topic}</strong>. Importancia dentro del campo académico, justificación del problema y formulación de hipótesis inicial.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-indigo-400 text-[11px] uppercase tracking-wider mb-1">2. Ejes Clave y Desarrollo del Tema</h5>
+                            <ul class="list-disc list-inside bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs space-y-1 leading-relaxed">
+                                <li>Antecedentes teóricos y evolución histórica del concepto.</li>
+                                <li>Mecanismos, variables clave y funcionamiento práctico.</li>
+                                ${keywords ? `<li>Enfoque específico: <em>${keywords}</em></li>` : ''}
+                                <li>Análisis de casos reales o impacto socioeconómico.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-indigo-400 text-[11px] uppercase tracking-wider mb-1">3. Preguntas para Debate o Análisis Crítico</h5>
+                            <ol class="list-decimal list-inside bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs space-y-1 leading-relaxed">
+                                <li>¿Cuáles son las principales controversias teóricas en torno a este fenómeno?</li>
+                                <li>¿De qué manera impactará ${topic} en los próximos 5 años?</li>
+                            </ol>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-indigo-400 text-[11px] uppercase tracking-wider mb-1">4. Conclusiones y Síntesis</h5>
+                            <p class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs leading-relaxed">
+                                Resumen de hallazgos principales, limitaciones del estudio y recomendaciones para investigaciones futuras.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            outputBox.innerHTML = contentHtml;
+            currentGeneratedOutline = { topic, level, format, content: contentHtml };
+            showToast('Esquema generado con éxito');
+        }
+
+        function saveOutlineAsSource() {
+            if (!currentGeneratedOutline) return;
+            const newSource = {
+                id: Date.now().toString(),
+                title: `Esquema: ${currentGeneratedOutline.topic}`,
+                subject: 'Investigación',
+                content: `Estructura para ${currentGeneratedOutline.format} (${currentGeneratedOutline.level})`,
+                url: ''
+            };
+            state.sources.unshift(newSource);
+            localStorage.setItem('edusuite_sources', JSON.stringify(state.sources));
+            renderSources();
+            showToast('Guardado en Fichas de Referencia');
+        }
+
+        // Gestor de Fuentes
+        function renderSources() {
+            const container = document.getElementById('sourcesGrid');
+            const filter = document.getElementById('filterSubject').value;
+            const selectFilter = document.getElementById('filterSubject');
+
+            // Actualizar Opciones del Filtro de Materia
+            const subjects = Array.from(new Set(state.sources.map(s => s.subject || 'General')));
+            selectFilter.innerHTML = '<option value="TODAS">Todas las materias</option>' + 
+                subjects.map(subj => `<option value="${subj}" ${filter === subj ? 'selected' : ''}>${subj}</option>`).join('');
+
+            const filtered = filter === 'TODAS' ? state.sources : state.sources.filter(s => s.subject === filter);
+
+            container.innerHTML = '';
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-10 text-center text-slate-500">
+                        <i class="fa-regular fa-folder-open text-2xl mb-2"></i>
+                        <p class="text-xs">No hay fichas guardadas para esta materia.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(source => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 border border-slate-800 dark:border-slate-800 light:border-slate-200 p-3.5 rounded-xl space-y-2 flex flex-col justify-between';
+                card.innerHTML = `
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">${source.subject || 'General'}</span>
+                            <button onclick="deleteSource('${source.id}')" class="text-slate-500 hover:text-rose-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <h5 class="text-xs font-bold text-white dark:text-white light:text-slate-900">${source.title}</h5>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-400 light:text-slate-600 line-clamp-3">${source.content}</p>
+                    </div>
+                    ${source.url ? `
+                        <div class="pt-2 border-t border-slate-800 dark:border-slate-800 light:border-slate-200 flex justify-end">
+                            <a href="${source.url}" target="_blank" class="text-[10px] text-indigo-400 hover:underline flex items-center gap-1">
+                                Abrir Enlace <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            </a>
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function addSource() {
+            const title = document.getElementById('sourceTitle').value.trim();
+            const subject = document.getElementById('sourceSubject').value.trim() || 'General';
+            const content = document.getElementById('sourceContent').value.trim();
+            const url = document.getElementById('sourceUrl').value.trim();
+
+            if (!title || !content) {
+                showToast('Ingresa título y contenido para la ficha', 'error');
+                return;
+            }
+
+            const newSource = { id: Date.now().toString(), title, subject, content, url };
+            state.sources.unshift(newSource);
+            localStorage.setItem('edusuite_sources', JSON.stringify(state.sources));
+            renderSources();
+
+            document.getElementById('sourceTitle').value = '';
+            document.getElementById('sourceSubject').value = '';
+            document.getElementById('sourceContent').value = '';
+            document.getElementById('sourceUrl').value = '';
+            showToast('Ficha guardada con éxito');
+        }
+
+        function deleteSource(id) {
+            state.sources = state.sources.filter(s => s.id !== id);
+            localStorage.setItem('edusuite_sources', JSON.stringify(state.sources));
+            renderSources();
+            showToast('Ficha eliminada');
+        }
+
+        /* ----------------------------------------------------
+           3. CALCULADORA DE PROMEDIOS CON NOTA MÍNIMA
+        ---------------------------------------------------- */
+        function addGradeRow(name = '', val = '', weight = '') {
+            const container = document.getElementById('gradesContainer');
+            const rowId = 'grade-' + Date.now() + Math.random().toString(36).substring(2, 5);
+
+            const div = document.createElement('div');
+            div.id = rowId;
+            div.className = 'flex items-center gap-2';
+            div.innerHTML = `
+                <input type="text" placeholder="Corte / Nota" value="${name}" class="grade-name flex-1 bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-2.5 py-1.5 text-xs text-white dark:text-white light:text-slate-900 focus:outline-none focus:border-indigo-500">
+                <input type="number" step="0.1" max="5" min="0" placeholder="Nota" value="${val}" class="grade-val w-16 bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-2 py-1.5 text-xs text-white dark:text-white light:text-slate-900 text-center focus:outline-none focus:border-indigo-500">
+                <input type="number" step="1" max="100" min="0" placeholder="%" value="${weight}" class="grade-weight w-14 bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 border border-slate-700 dark:border-slate-700 light:border-slate-300 rounded-xl px-1.5 py-1.5 text-xs text-white dark:text-white light:text-slate-900 text-center focus:outline-none focus:border-indigo-500">
+                <button onclick="removeGradeRow('${rowId}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeGradeRow(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+            calculateGrades();
+        }
+
+        function calculateGrades() {
+            const rows = document.querySelectorAll('#gradesContainer > div');
+            let totalWeightedSum = 0;
+            let totalWeightEntered = 0;
+            let missingWeight = 0;
+
+            rows.forEach(row => {
+                const gradeVal = parseFloat(row.querySelector('.grade-val').value);
+                const weightVal = parseFloat(row.querySelector('.grade-weight').value) || 0;
+
+                if (!isNaN(gradeVal) && !isNaN(weightVal)) {
+                    totalWeightedSum += (gradeVal * weightVal);
+                    totalWeightEntered += weightVal;
+                } else if (!isNaN(weightVal)) {
+                    missingWeight += weightVal;
+                }
+            });
+
+            const currentAvg = totalWeightEntered > 0 ? (totalWeightedSum / totalWeightEntered).toFixed(2) : "0.00";
+            document.getElementById('calculatedAverage').innerText = currentAvg;
+            document.getElementById('totalWeightSpan').innerText = `${totalWeightEntered + missingWeight}%`;
+
+            const badge = document.getElementById('averageStatusBadge');
+            const alertText = document.getElementById('requiredGradeText');
+
+            if (totalWeightEntered === 0) {
+                badge.innerText = "Sin datos";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400";
+                alertText.innerHTML = "Ingresa al menos una nota con su porcentaje.";
+                return;
+            }
+
+            // Cálculo de nota requerida para aprobar (Mínimo 3.0 sobre 5.0)
+            const targetMinGrade = 3.0;
+            const requiredWeightedSumNeeded = targetMinGrade * 100;
+            const remainingNeededPoints = requiredWeightedSumNeeded - totalWeightedSum;
+
+            if (totalWeightedSum >= requiredWeightedSumNeeded) {
+                badge.innerText = "¡Aprobado!";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                alertText.innerHTML = `<span class="text-emerald-400 font-bold">¡Felicidades!</span> Ya aseguraste la nota mínima de aprobación.`;
+            } else if (missingWeight > 0) {
+                const neededGradeOnMissing = (remainingNeededPoints / missingWeight).toFixed(2);
+                if (neededGradeOnMissing <= 5.0) {
+                    badge.innerText = "En progreso";
+                    badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                    alertText.innerHTML = `Necesitas sacar mínimo <span class="font-bold text-amber-400">${neededGradeOnMissing}</span> en el <span class="font-bold text-indigo-400">${missingWeight}%</span> restante.`;
+                } else {
+                    badge.innerText = "En riesgo alto";
+                    badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
+                    alertText.innerHTML = `<span class="text-rose-400 font-bold">Atención:</span> Requieres más de 5.0 en el porcentaje restante para alcanzar 3.0.`;
+                }
+            } else {
+                badge.innerText = "Reprobado";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
+                alertText.innerHTML = `El acumulado final no alcanza la nota mínima de 3.0.`;
+            }
+        }
+
+        /* ----------------------------------------------------
+           4. TEMPORIZADOR POMODORO INTERACTIVO
+        ---------------------------------------------------- */
+        let timerInterval = null;
+        let totalTimerSeconds = 25 * 60;
+        let timerSecondsLeft = 25 * 60;
+        let isTimerRunning = false;
+        let completedCycles = 0;
+
+        function setTimerMode(mode) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            document.getElementById('btnStartTimer').innerHTML = `<i class="fa-solid fa-play"></i> Iniciar`;
+
+            if (mode === 'study') {
+                totalTimerSeconds = 25 * 60;
+                timerSecondsLeft = 25 * 60;
+                document.getElementById('pomodoroState').innerText = "Modo Estudio";
+                document.getElementById('btnTimerStudy').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white";
+                document.getElementById('btnTimerBreak').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-400 hover:text-white";
+            } else {
+                totalTimerSeconds = 5 * 60;
+                timerSecondsLeft = 5 * 60;
+                document.getElementById('pomodoroState').innerText = "Descanso Corto";
+                document.getElementById('btnTimerBreak').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white";
+                document.getElementById('btnTimerStudy').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 dark:bg-slate-800 light:bg-slate-200 text-slate-400 hover:text-white";
+            }
+            updateTimerDisplay();
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                document.getElementById('btnStartTimer').innerHTML = `<i class="fa-solid fa-play"></i> Iniciar`;
+            } else {
+                isTimerRunning = true;
+                document.getElementById('btnStartTimer').innerHTML = `<i class="fa-solid fa-pause"></i> Pausar`;
+                timerInterval = setInterval(() => {
+                    if (timerSecondsLeft > 0) {
+                        timerSecondsLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        completedCycles++;
+                        document.getElementById('cycleCounter').innerText = `Ciclos: ${completedCycles}/4`;
+                        showToast('¡Sesión Pomodoro Finalizada!');
+                        document.getElementById('btnStartTimer').innerHTML = `<i class="fa-solid fa-play"></i> Iniciar`;
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            setTimerMode('study');
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timerSecondsLeft / 60).toString().padStart(2, '0');
+            const s = (timerSecondsLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+
+            // Actualizar Anillo de Progreso
+            const circle = document.getElementById('timerProgressCircle');
+            const circumference = 2 * Math.PI * 42; // r=42 -> ~263.89
+            const offset = circumference - (timerSecondsLeft / totalTimerSeconds) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        /* ----------------------------------------------------
+           5. GENERADOR APA 7ª EDICIÓN
+        ---------------------------------------------------- */
+        function generateAPACitation() {
+            const author = document.getElementById('apaAuthor').value.trim();
+            const year = document.getElementById('apaYear').value.trim() || 's.f.';
+            const title = document.getElementById('apaTitle').value.trim();
+            const publisher = document.getElementById('apaPublisher').value.trim();
+            const url = document.getElementById('apaUrl').value.trim();
+
+            if (!author || !title) {
+                showToast('Ingresa autor y título', 'error');
+                return;
+            }
+
+            let citation = `${author} (${year}). <em>${title}</em>.`;
+            if (publisher) citation += ` ${publisher}.`;
+            if (url) citation += ` ${url}`;
+
+            document.getElementById('apaResultBox').innerHTML = citation;
+            showToast('Cita APA 7 generada');
+        }
+
+        /* ----------------------------------------------------
+           6. TABLERO KANBAN CON DRAG & DROP Y BOTONES
+        ---------------------------------------------------- */
+        function renderKanban() {
+            const cols = { todo: [], in_progress: [], done: [] };
+            state.tasks.forEach(task => {
+                if (cols[task.status]) cols[task.status].push(task);
+            });
+
+            ['todo', 'in_progress', 'done'].forEach(status => {
+                const container = document.getElementById(`col-${status}`);
+                const countEl = document.getElementById(`count-${status}`);
+                container.innerHTML = '';
+                countEl.innerText = cols[status].length;
+
+                cols[status].forEach(task => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-slate-100 border border-slate-800 dark:border-slate-800 light:border-slate-200 rounded-xl p-3.5 space-y-2.5 cursor-grab active:cursor-grabbing hover:border-indigo-500/50 transition-all shadow-md';
+                    card.draggable = true;
+                    card.ondragstart = (e) => e.dataTransfer.setData('text/plain', task.id);
+
+                    const priorityClass = task.priority === 'Alta' ? 'bg-rose-500/20 text-rose-300' : task.priority === 'Media' ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-700 text-slate-300';
+
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] font-bold px-2 py-0.5 rounded ${priorityClass}">${task.priority}</span>
+                            <button onclick="deleteTask('${task.id}')" class="text-slate-500 hover:text-rose-400 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <h5 class="text-xs font-bold text-white dark:text-white light:text-slate-900">${task.title}</h5>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800 dark:border-slate-800 light:border-slate-200">
+                            <span><i class="fa-regular fa-folder text-indigo-400 mr-1"></i>${task.subject || 'General'}</span>
+                            <span><i class="fa-regular fa-calendar text-slate-500 mr-1"></i>${task.dueDate || 'Sin fecha'}</span>
+                        </div>
+                        <div class="flex justify-between gap-1 pt-1">
+                            ${status !== 'todo' ? `<button onclick="moveTask('${task.id}', 'todo')" class="text-[9px] bg-slate-800 dark:bg-slate-800 light:bg-slate-200 px-2 py-0.5 rounded text-slate-400 hover:text-white">← Por hacer</button>` : ''}
+                            ${status !== 'in_progress' ? `<button onclick="moveTask('${task.id}', 'in_progress')" class="text-[9px] bg-slate-800 dark:bg-slate-800 light:bg-slate-200 px-2 py-0.5 rounded text-slate-400 hover:text-white">Proceso</button>` : ''}
+                            ${status !== 'done' ? `<button onclick="moveTask('${task.id}', 'done')" class="text-[9px] bg-slate-800 dark:bg-slate-800 light:bg-slate-200 px-2 py-0.5 rounded text-slate-400 hover:text-white">Hecho →</button>` : ''}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+        }
+
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drop(ev, newStatus) {
+            ev.preventDefault();
+            const taskId = ev.dataTransfer.getData('text/plain');
+            moveTask(taskId, newStatus);
+        }
+
+        function moveTask(id, newStatus) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) {
+                task.status = newStatus;
+                localStorage.setItem('edusuite_tasks', JSON.stringify(state.tasks));
+                renderKanban();
+            }
+        }
+
+        function openAddTaskModal() { document.getElementById('addTaskModal').classList.remove('hidden'); }
+        function closeAddTaskModal() { document.getElementById('addTaskModal').classList.add('hidden'); }
+
+        function saveNewTask() {
+            const title = document.getElementById('taskTitle').value.trim();
+            const subject = document.getElementById('taskSubject').value.trim();
+            const priority = document.getElementById('taskPriority').value;
+            const dueDate = document.getElementById('taskDueDate').value;
+
+            if (!title) {
+                showToast('Escribe el título de la tarea', 'error');
+                return;
+            }
+
+            const newTask = { id: Date.now().toString(), title, subject, priority, status: 'todo', dueDate };
+            state.tasks.push(newTask);
+            localStorage.setItem('edusuite_tasks', JSON.stringify(state.tasks));
+            renderKanban();
+            closeAddTaskModal();
+            showToast('Tarea agregada al Kanban');
+            document.getElementById('taskTitle').value = '';
+        }
+
+        function deleteTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            localStorage.setItem('edusuite_tasks', JSON.stringify(state.tasks));
+            renderKanban();
+            showToast('Tarea eliminada');
+        }
+
+        /* ----------------------------------------------------
+           UTILIDADES GENERALES
+        ---------------------------------------------------- */
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.innerText || el.textContent;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showToast('Copiado al portapapeles');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
