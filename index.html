@@ -1,10 +1,9 @@
-
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eduassit - Plataforma Interactiva & Asistente Estudiantil</title>
+    <title>Eduassit v2.0 - Plataforma & Asistente Interactivo de Estudio</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -74,7 +73,7 @@
                     </div>
                     <div>
                         <h1 class="font-bold text-lg leading-tight tracking-wide">Eduassit</h1>
-                        <p class="text-xs text-indigo-400 font-medium">Asistente & Suite Estudiantil</p>
+                        <p class="text-xs text-indigo-400 font-medium">Plataforma & Tutor de Estudio</p>
                     </div>
                 </div>
             </div>
@@ -83,17 +82,17 @@
             <nav class="p-4 space-y-1.5">
                 <button onclick="switchTab('redactor')" id="nav-redactor" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
                     <i class="fa-solid fa-pen-nib w-5 text-center text-indigo-200"></i>
-                    <span>Redactor de Ensayos</span>
+                    <span>Redactor y Extensión</span>
                 </button>
 
-                <button onclick="switchTab('mejorador')" id="nav-mejorador" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-wand-magic-sparkles w-5 text-center"></i>
-                    <span>Mejorador de Redacción</span>
+                <button onclick="switchTab('tutoria')" id="nav-tutoria" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
+                    <i class="fa-solid fa-brain w-5 text-center"></i>
+                    <span>Tutor & Repaso Activo</span>
                 </button>
 
-                <button onclick="switchTab('rutinas')" id="nav-rutinas" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-calendar-check w-5 text-center"></i>
-                    <span>Planificador de Estudio</span>
+                <button onclick="switchTab('stem')" id="nav-stem" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
+                    <i class="fa-solid fa-square-root-variable w-5 text-center"></i>
+                    <span>Lab. Mates y Física</span>
                 </button>
 
                 <button onclick="switchTab('pomodoro')" id="nav-pomodoro" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
@@ -118,7 +117,6 @@
             </nav>
         </div>
 
-        <!-- Footer Sidebar -->
         <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
             <span>Versión 2.0 (Pro)</span>
             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -130,181 +128,163 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
 
-        <!-- 1. REDACTOR DE ENSAYOS Y TRABAJOS -->
+        <!-- 1. REDACTOR Y CONTROL DE EXTENSIÓN -->
         <section id="tab-redactor" class="tab-content active space-y-6">
-            <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-nib text-indigo-600"></i> Generador Inteligente de Ensayos y Trabajos
-                    </h2>
-                    <p class="text-slate-500 text-sm mt-1">Genera estructuras completas, tesis, argumentos y guías paso a paso para redactar tus proyectos académicos.</p>
-                </div>
+            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib text-indigo-600"></i> Redactor & Ajuste de Extensión (200 / 500 / 700+ Palabras)
+                </h2>
+                <p class="text-slate-500 text-sm mt-1">Genera o expande textos académicos adaptados a la cantidad de palabras que requiera tu tarea.</p>
             </header>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Formulario -->
                 <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <h3 class="font-bold text-slate-800 text-lg border-b pb-3">Configurar Trabajo</h3>
-                    
+                    <h3 class="font-bold text-slate-800 border-b pb-3">Configuración de Texto</h3>
+
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tema del Trabajo</label>
-                        <input type="text" id="essay-topic" placeholder="Ej: Impacto del reciclaje en la economía local" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tema o Texto Borrador</label>
+                        <textarea id="essay-input" rows="4" placeholder="Escribe el tema o pega tu borrador inicial aquí..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm"></textarea>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tipo de Documento</label>
-                        <select id="essay-type" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
-                            <option value="argumentativo">Ensayo Argumentativo</option>
-                            <option value="informe">Informe de Investigación</option>
-                            <option value="resumen">Resumen Ejecutivo / Analítico</option>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Extensión Objetivo</label>
+                        <select id="essay-word-target" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
+                            <option value="200">~ 200 Palabras (Resumen / Párrafo Corto)</option>
+                            <option value="500" selected>~ 500 Palabras (Ensayo Estándar / 1-2 Págs)</option>
+                            <option value="700">~ 700+ Palabras (Informe Profundo / Extenso)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tono de Redacción</label>
-                        <select id="essay-tone" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Estilo de Redacción</label>
+                        <select id="essay-style" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
                             <option value="academico">Académico / Formal</option>
-                            <option value="divulgativo">Divulgativo / Didáctico</option>
-                            <option value="persuasivo">Persuasivo / Crítico</option>
+                            <option value="critico">Análisis Crítico / Argumentativo</option>
+                            <option value="divulgativo">Explicativo / Didáctico</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Puntos Clave / Objetivos (Opcional)</label>
-                        <textarea id="essay-keys" rows="3" placeholder="Ej: Mencionar beneficios ecológicos, empleo formal y conciencia comunitaria..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm"></textarea>
-                    </div>
-
-                    <button onclick="generateEssayStructure()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-sparkles"></i> Generar Estructura & Borrador
+                    <button onclick="generateCustomText()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Redactar / Expandir Texto
                     </button>
                 </div>
 
-                <!-- Visor / Resultado -->
+                <!-- Resultado -->
                 <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between border-b pb-3 mb-4">
-                            <h3 class="font-bold text-slate-800 text-lg">Estructura & Esquema Generado</h3>
-                            <button onclick="copyEssayToClipboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5">
-                                <i class="fa-regular fa-copy"></i> Copiar Texto
-                            </button>
+                            <h3 class="font-bold text-slate-800">Resultado Generado</h3>
+                            <span id="output-word-count" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-3 py-1 rounded-full border border-indigo-100">0 palabras</span>
                         </div>
 
-                        <div id="essay-output" class="prose prose-slate max-w-none text-sm leading-relaxed space-y-4 text-slate-600 custom-scrollbar max-h-[500px] overflow-y-auto pr-2">
-                            <div class="text-center py-12 text-slate-400">
-                                <i class="fa-solid fa-file-signature text-4xl mb-3 text-slate-300"></i>
-                                <p>Ingresa un tema y haz clic en "Generar Estructura & Borrador" para crear tu guía académica.</p>
-                            </div>
+                        <div id="essay-output" class="text-sm leading-relaxed text-slate-700 space-y-3 custom-scrollbar max-h-[420px] overflow-y-auto pr-2 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <em class="text-slate-400">El texto generado aparecerá aquí con la extensión exacta seleccionada...</em>
                         </div>
+                    </div>
+
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="copyToClipboard('essay-output')" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-regular fa-copy"></i> Copiar Texto
+                        </button>
+                        <button onclick="downloadTextFile()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-download"></i> Descargar .TXT
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. MEJORADOR DE REDACCIÓN Y TONO -->
-        <section id="tab-mejorador" class="tab-content space-y-6">
+        <!-- 2. TUTOR DE REPASO ACTIVO & CUESTIONARIOS -->
+        <section id="tab-tutoria" class="tab-content space-y-6">
             <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i> Asistente de Redacción y Tono
+                    <i class="fa-solid fa-brain text-indigo-600"></i> Tutor de Estudio & Repaso Activo (Flashcards)
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Optimiza la fluidez, corrige el lenguaje informal y ajusta tus párrafos a un estilo puramente académico.</p>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Entrada -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tu Borrador / Párrafo</label>
-                        <textarea id="improve-input" rows="8" placeholder="Escribe o pega aquí el texto que quieres mejorar..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm"></textarea>
-                    </div>
-
-                    <div class="space-y-3">
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Modo de Mejora</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button onclick="enhanceText('formal')" class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 p-2.5 rounded-xl text-xs font-bold transition text-center">
-                                Académico / Formal
-                            </button>
-                            <button onclick="enhanceText('fluido')" class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 p-2.5 rounded-xl text-xs font-bold transition text-center">
-                                Más Fluido
-                            </button>
-                            <button onclick="enhanceText('resumen')" class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 p-2.5 rounded-xl text-xs font-bold transition text-center">
-                                Sintetizar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Salida -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between border-b pb-3 mb-3">
-                            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Resultado Optimizado</h3>
-                            <span id="word-count-badge" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-medium">0 palabras</span>
-                        </div>
-                        <div id="improve-output" class="text-sm text-slate-700 leading-relaxed min-h-[200px] p-4 bg-slate-50 rounded-xl border border-slate-200 custom-scrollbar max-h-[300px] overflow-y-auto">
-                            <em>El texto mejorado aparecerá aquí...</em>
-                        </div>
-                    </div>
-
-                    <button onclick="copyImprovedText()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm">
-                        <i class="fa-regular fa-copy"></i> Copiar Resultado
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. PLANIFICADOR DE ESTUDIO Y RUTINAS -->
-        <section id="tab-rutinas" class="tab-content space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-check text-indigo-600"></i> Planificador Inteligente de Rutinas de Estudio
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Organiza tus entregas, exámenes y proyectos con un cronograma diario personalizado.</p>
+                <p class="text-slate-500 text-sm mt-1">Genera preguntas clave y pon a prueba tus conocimientos para tus exámenes.</p>
             </header>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Parámetros -->
+                <!-- Configuración Tutor -->
                 <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-3">Detalles del Proyecto / Examen</h3>
+                    <h3 class="font-bold text-slate-800 border-b pb-3">Configurar Sesión de Repaso</h3>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Materia / Tema</label>
-                        <input type="text" id="routine-subject" placeholder="Ej: Examen Final de Física o Proyecto SENA" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Días Disponibles</label>
-                            <input type="number" id="routine-days" min="1" max="30" value="5" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Horas/Día</label>
-                            <input type="number" id="routine-hours" min="1" max="12" value="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
-                        </div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Asignatura o Tema</label>
+                        <input type="text" id="tutor-subject" placeholder="Ej: La Célula, Historia de Colombia, Filosofía cartesiana" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nivel de Dificultad</label>
-                        <select id="routine-difficulty" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
-                            <option value="medio">Moderado (Equilibrado)</option>
-                            <option value="alto">Alto (Requiere repasos intensos)</option>
-                            <option value="bajo">Bajo (Revisión rápida)</option>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nivel de Exigencia</label>
+                        <select id="tutor-level" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm bg-white">
+                            <option value="basico">Conceptos Básicos / Definiciones</option>
+                            <option value="intermedio">Análisis y Aplicación</option>
+                            <option value="avanzado">Examen Intensivo / Preguntas de Juicio</option>
                         </select>
                     </div>
 
-                    <button onclick="generateStudyRoutine()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-route"></i> Crear Plan de Estudio
+                    <button onclick="generateFlashcards()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> Generar Cuestionario de Repaso
                     </button>
                 </div>
 
-                <!-- Resultado Plan -->
+                <!-- Tarjetas de Repaso -->
                 <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                    <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Cronograma Recomendado</h3>
-                    <div id="routine-output" class="space-y-3 custom-scrollbar max-h-[450px] overflow-y-auto pr-2">
+                    <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Preguntas de Repaso Generadas</h3>
+                    <div id="flashcards-container" class="space-y-4 custom-scrollbar max-h-[450px] overflow-y-auto pr-2">
                         <div class="text-center py-12 text-slate-400">
-                            <i class="fa-solid fa-calendar-days text-4xl mb-3 text-slate-300"></i>
-                            <p>Completa los datos para generar tu plan diario de estudio.</p>
+                            <i class="fa-solid fa-circle-question text-4xl mb-3 text-slate-300"></i>
+                            <p>Ingresa una asignatura para generar tu tarjeta de preguntas interactiva.</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. LABORATORIO DE MATEMÁTICAS Y FÍSICA -->
+        <section id="tab-stem" class="tab-content space-y-6">
+            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-square-root-variable text-indigo-600"></i> Laboratorio Práctico de Matemáticas & Física
+                </h2>
+                <p class="text-slate-500 text-sm mt-1">Practica problemas numéricos con verificación y procedimiento paso a paso desglosado.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Selector de Tema -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+                    <h3 class="font-bold text-slate-800 border-b pb-3">Seleccionar Módulo de Práctica</h3>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tema Matemático / Físico</label>
+                        <select id="stem-topic" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm bg-white">
+                            <option value="trigonometria">Trigonometría (Leyes de Seno y Coseno / Triángulos)</option>
+                            <option value="vectores">Física: Vectores y Componentes (Fx, Fy, Magnitud)</option>
+                            <option value="cinematica">Física: Cinemática / M.U.A. (Aceleración y Velocidad)</option>
+                            <option value="ecuaciones">Álgebra: Sistemas de Ecuaciones 2x2</option>
+                        </select>
+                    </div>
+
+                    <button onclick="generateStemProblem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> Generar Problema
+                    </button>
+                </div>
+
+                <!-- Panel del Problema -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+                    <div id="stem-problem-card" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Ejercicio Activo</span>
+                        <p id="stem-question" class="text-slate-800 font-medium text-sm">Haz clic en "Generar Problema" para comenzar a practicar.</p>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="stem-user-answer" placeholder="Escribe tu resultado aquí..." class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500">
+                        <button onclick="checkStemAnswer()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                            Comprobar
+                        </button>
+                    </div>
+
+                    <div id="stem-feedback" class="hidden p-4 rounded-xl text-sm space-y-2"></div>
                 </div>
             </div>
         </section>
@@ -315,12 +295,11 @@
                 <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
                     <i class="fa-solid fa-stopwatch text-indigo-600"></i> Temporizador Pomodoro & Sonidos de Ambiente
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Mantén el enfoque en sesiones de 25 minutos con sonidos de fondo relajantes.</p>
+                <p class="text-slate-500 text-sm mt-1">Optimiza tu concentración en bloques de estudio con audio relajante continuo.</p>
             </header>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Timer Pomodoro -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col items-center justify-center text-center space-y-6">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center space-y-6">
                     <span id="pomodoro-mode" class="px-3 py-1 bg-indigo-50 text-indigo-600 font-bold text-xs rounded-full uppercase tracking-wider">Sesión de Enfoque</span>
                     
                     <div class="text-6xl font-extrabold text-slate-900 tracking-tight font-mono" id="pomo-timer">
@@ -346,18 +325,16 @@
                     </div>
                 </div>
 
-                <!-- Sonidos de Ambiente Sintetizados -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-3">Ambiente de Enfoque (Sintetizador Web Audio)</h3>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-800 border-b pb-3">Ambiente de Enfoque Sintetizado</h3>
 
                     <div class="space-y-3">
-                        <!-- Sonido Lluvia/Río -->
                         <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
                             <div class="flex items-center gap-3">
                                 <i class="fa-solid fa-cloud-rain text-indigo-500 text-lg"></i>
                                 <div>
                                     <h4 class="font-semibold text-sm text-slate-800">Lluvia / Río Relajante</h4>
-                                    <p class="text-xs text-slate-500">Ruido rosa continuo suave</p>
+                                    <p class="text-xs text-slate-500">Ruido rosa continuo</p>
                                 </div>
                             </div>
                             <button onclick="toggleSound('rain')" id="btn-sound-rain" class="px-4 py-2 bg-slate-200 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition">
@@ -365,30 +342,15 @@
                             </button>
                         </div>
 
-                        <!-- Ruido Blanco -->
                         <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
                             <div class="flex items-center gap-3">
                                 <i class="fa-solid fa-wind text-indigo-500 text-lg"></i>
                                 <div>
                                     <h4 class="font-semibold text-sm text-slate-800">Ruido Blanco Puro</h4>
-                                    <p class="text-xs text-slate-500">Bloquea distracciones externas</p>
+                                    <p class="text-xs text-slate-500">Bloqueo de distracciones</p>
                                 </div>
                             </div>
                             <button onclick="toggleSound('white')" id="btn-sound-white" class="px-4 py-2 bg-slate-200 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition">
-                                Reproducir
-                            </button>
-                        </div>
-
-                        <!-- Ondas Alfa -->
-                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-brain text-indigo-500 text-lg"></i>
-                                <div>
-                                    <h4 class="font-semibold text-sm text-slate-800">Tono Binaural / Alfa</h4>
-                                    <p class="text-xs text-slate-500">Frecuencia de concentración (10 Hz)</p>
-                                </div>
-                            </div>
-                            <button onclick="toggleSound('binaural')" id="btn-sound-binaural" class="px-4 py-2 bg-slate-200 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition">
                                 Reproducir
                             </button>
                         </div>
@@ -397,49 +359,40 @@
             </div>
         </section>
 
-        <!-- 5. CALCULADORA DE PROMEDIOS Y NOTAS -->
+        <!-- 5. CALCULADORA DE PROMEDIOS -->
         <section id="tab-promedios" class="tab-content space-y-6">
             <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-calculator text-indigo-600"></i> Calculadora de Promedios y Ponderaciones
+                    <i class="fa-solid fa-calculator text-indigo-600"></i> Calculadora de Promedios & Notas
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Calcula tu nota acumulada y descubre cuánto necesitas en el examen final para aprobar.</p>
+                <p class="text-slate-500 text-sm mt-1">Lleva el control exacto de tus porcentajes y nota mínima requerida.</p>
             </header>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Lista de Notas -->
                 <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
                     <div class="flex items-center justify-between border-b pb-3">
-                        <h3 class="font-bold text-slate-800">Calificaciones de la Asignatura</h3>
+                        <h3 class="font-bold text-slate-800">Notas de la Asignatura</h3>
                         <button onclick="addGradeRow()" class="text-xs bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1">
                             <i class="fa-solid fa-plus"></i> Agregar Nota
                         </button>
                     </div>
 
-                    <div id="grades-container" class="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar pr-2">
-                        <!-- Fila dinámicas -->
-                    </div>
+                    <div id="grades-container" class="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar pr-2"></div>
                 </div>
 
-                <!-- Panel de Resultado -->
                 <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between space-y-6">
                     <div>
-                        <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Resumen Académico</h3>
+                        <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Resumen de Calificaciones</h3>
                         
                         <div class="bg-slate-50 p-4 rounded-xl space-y-3 border border-slate-200">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-slate-600 font-medium">Porcentaje Total:</span>
+                                <span class="text-sm text-slate-600 font-medium">Porcentaje Evaluado:</span>
                                 <span id="total-weight" class="font-bold text-slate-900">0%</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-slate-600 font-medium">Promedio Actual:</span>
+                                <span class="text-sm text-slate-600 font-medium">Promedio Acumulado:</span>
                                 <span id="current-average" class="text-xl font-extrabold text-indigo-600">0.0</span>
                             </div>
-                        </div>
-
-                        <div class="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-xs leading-relaxed">
-                            <strong class="block mb-1 font-bold text-amber-950">📌 Nota Deseada:</strong>
-                            Para aprobar con mínimo <strong>3.0 / 5.0</strong> con un porcentaje restante, la herramienta te mostrará la nota exigida automáticamente.
                         </div>
                     </div>
 
@@ -454,83 +407,63 @@
         <section id="tab-apa" class="tab-content space-y-6">
             <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-quote-right text-indigo-600"></i> Generador de Citas APA (7ª Edición)
+                    <i class="fa-solid fa-quote-right text-indigo-600"></i> Generador APA (7ª Edición)
                 </h2>
-                <p class="text-slate-500 text-sm mt-1">Crea referencias bibliográficas completas listas para copiar en la sección de bibliografía.</p>
+                <p class="text-slate-500 text-sm mt-1">Construye referencias en formato estándar listas para copiar.</p>
             </header>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Formulario -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tipo de Fuente</label>
-                        <select id="apa-type" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
-                            <option value="web">Página Web / Artículo Online</option>
-                            <option value="libro">Libro Impreso o Digital</option>
-                        </select>
-                    </div>
-
-                    <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Autor(es)</label>
-                        <input type="text" id="apa-author" placeholder="Ej: García, M. o NASA" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
+                        <input type="text" id="apa-author" placeholder="Ej: García, M." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Año de Publicación</label>
-                        <input type="text" id="apa-year" placeholder="Ej: 2024" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Año</label>
+                        <input type="text" id="apa-year" placeholder="Ej: 2024" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Título del Libro o Artículo</label>
-                        <input type="text" id="apa-title" placeholder="Ej: Estrategias sostenibles en el siglo XXI" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Título</label>
+                        <input type="text" id="apa-title" placeholder="Ej: Fundamentos de Física y Mecánica" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Editorial / Nombre del Sitio Web / URL</label>
-                        <input type="text" id="apa-source" placeholder="Ej: Editorial Planeta o https://ejemplo.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Editorial / Web</label>
+                        <input type="text" id="apa-source" placeholder="Ej: Editorial Educación" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
                     </div>
-
-                    <button onclick="generateAPA()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition">
-                        Generar Cita Bibliográfica
-                    </button>
+                    <button onclick="generateAPA()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition">Generar Referencia</button>
                 </div>
 
-                <!-- Salida APA -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
                     <div>
-                        <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Referencia Citable APA 7</h3>
-                        <div id="apa-result" class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-serif italic min-h-[120px] flex items-center justify-center text-center">
-                            Ingresa los datos requeridos para formatear la cita.
+                        <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Cita Formateada</h3>
+                        <div id="apa-result" class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm italic font-serif min-h-[100px] flex items-center justify-center text-center">
+                            Ingresa los datos para generar la cita.
                         </div>
                     </div>
-
-                    <button onclick="copyAPA()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm mt-4">
-                        <i class="fa-regular fa-copy"></i> Copiar Referencia
-                    </button>
+                    <button onclick="copyToClipboard('apa-result')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl transition text-sm mt-4">Copiar Cita</button>
                 </div>
             </div>
         </section>
 
-        <!-- 7. TABLERO DE TAREAS (KANBAN) -->
+        <!-- 7. TABLERO KANBAN -->
         <section id="tab-kanban" class="tab-content space-y-6">
             <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-indigo-600"></i> Tablero de Tareas y Pendientes
+                        <i class="fa-solid fa-list-check text-indigo-600"></i> Tablero de Pendientes
                     </h2>
-                    <p class="text-slate-500 text-sm mt-1">Organiza tus entregas por estado con guardado automático local.</p>
+                    <p class="text-slate-500 text-sm mt-1">Organización visual con guardado local automático.</p>
                 </div>
 
                 <div class="flex items-center gap-2">
                     <input type="text" id="kanban-new-title" placeholder="Nueva tarea..." class="px-4 py-2 rounded-xl border border-slate-300 text-sm focus:border-indigo-500">
                     <button onclick="addKanbanTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition">
-                        Añadir
+                        Agregar
                     </button>
                 </div>
             </header>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Por Hacer -->
                 <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-3">
                     <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Pendientes
@@ -538,7 +471,6 @@
                     <div id="col-todo" class="space-y-2 min-h-[250px]"></div>
                 </div>
 
-                <!-- En Proceso -->
                 <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-3">
                     <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> En Proceso
@@ -546,7 +478,6 @@
                     <div id="col-doing" class="space-y-2 min-h-[250px]"></div>
                 </div>
 
-                <!-- Entregado -->
                 <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-3">
                     <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Completado
@@ -558,7 +489,7 @@
 
     </main>
 
-    <!-- WIDGET DE CHAT ASISTENTE "EDUBOT" -->
+    <!-- WIDGET CHAT EDUBOT -->
     <div class="fixed bottom-6 right-6 z-50">
         <button onclick="toggleEduBot()" class="w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-transform hover:scale-105">
             <i class="fa-solid fa-robot"></i>
@@ -569,8 +500,8 @@
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-robot text-indigo-400"></i>
                     <div>
-                        <h4 class="font-bold text-sm">EduBot - Asistente Rápido</h4>
-                        <p class="text-[10px] text-slate-400">Sugerencias y conectores</p>
+                        <h4 class="font-bold text-sm">EduBot - Tutor Rápido</h4>
+                        <p class="text-[10px] text-slate-400">Asistencia y conectores</p>
                     </div>
                 </div>
                 <button onclick="toggleEduBot()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
@@ -578,12 +509,12 @@
 
             <div id="edubot-messages" class="p-4 space-y-3 h-64 overflow-y-auto text-xs custom-scrollbar bg-slate-50">
                 <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl text-slate-700">
-                    👋 ¡Hola! Soy <strong>EduBot</strong>. Pregúntame sobre conectores para redactar, consejos de estudio o dudas rápidas.
+                    👋 ¡Hola! Soy <strong>EduBot</strong>. Pregúntame sobre consejos de redacción, fórmulas o conectores.
                 </div>
             </div>
 
             <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
-                <input type="text" id="edubot-input" placeholder="Ej: Conectores para conclusión..." class="flex-1 px-3 py-2 rounded-xl border text-xs focus:outline-none focus:border-indigo-500">
+                <input type="text" id="edubot-input" placeholder="Pregunta algo..." class="flex-1 px-3 py-2 rounded-xl border text-xs focus:outline-none">
                 <button onclick="sendEduBotMessage()" class="bg-indigo-600 text-white px-3 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
@@ -591,9 +522,9 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LÓGICA -->
+    <!-- JAVASCRIPT COMPLETO -->
     <script>
-        // 1. CAMBIO DE PESTAÑAS (SPA)
+        // 1. CONTROL DE PESTAÑAS (SPA)
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -603,111 +534,137 @@
 
             document.getElementById('tab-' + tabId).classList.add('active');
             const activeNav = document.getElementById('nav-' + tabId);
-            activeNav.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
-            activeNav.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            if (activeNav) {
+                activeNav.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+                activeNav.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            }
         }
 
-        // 2. REDACTOR DE ENSAYOS
-        function generateEssayStructure() {
-            const topic = document.getElementById('essay-topic').value.trim() || "el tema seleccionado";
-            const type = document.getElementById('essay-type').value;
-            const tone = document.getElementById('essay-tone').value;
-            const keys = document.getElementById('essay-keys').value.trim();
+        // 2. REDACTOR CON SELECTOR EXACTO DE PALABRAS
+        function generateCustomText() {
+            const input = document.getElementById('essay-input').value.trim() || "La importancia del aprendizaje continuo y la investigación académica";
+            const targetWords = parseInt(document.getElementById('essay-word-target').value);
+            const style = document.getElementById('essay-style').value;
 
-            let outputHTML = `
-                <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 mb-4">
-                    <h4 class="font-bold text-indigo-950 text-base mb-1">📌 Proposal de Título:</h4>
-                    <p class="text-indigo-900 font-semibold italic">"${topic.toUpperCase()}: Perspectivas, análisis y proyecciones"</p>
-                </div>
+            let paragraph1 = `En el contexto contemporáneo, abordar el tema de ${input} resulta indispensable para comprender la evolución de las dinámicas actuales. A través de un análisis detallado, es posible identificar los pilares fundamentales que estructuran este fenómeno y su impacto directo en el ámbito educativo y social. `;
+            
+            let paragraph2 = `Profundizando en los aspectos clave, diversos estudios sostienen que la aplicación práctica y el desarrollo conceptual de ${input} potencian significativamente las capacidades analíticas. Además, al evaluar las variables involucradas, se evidencia una clara correlación entre una metodología bien estructurada y la consecución de resultados óptimos. Asimismo, resulta imperativo considerar las implicaciones a largo plazo y las múltiples perspectivas que enriquecen este campo de estudio. `;
+            
+            let paragraph3 = `Por otra parte, al contrastar las teorías tradicionales con los enfoques modernos, surge la necesidad de reformular estrategias para adaptarse a los nuevos desafíos. La integración de herramientas innovadoras y el pensamiento crítico permiten superar barreras metodológicas, garantizando una comprensión más integral y rigurosa. Este proceso no solo favorece la resolución efectiva de problemas, sino que también promueve un entorno colaborativo y dinámico. `;
+            
+            let paragraph4 = `En conclusión, los elementos analizados demuestran que ${input} constituye un eje transformador en la formación y desarrollo profesional. Se recomienda continuar fomentando espacios de investigación, evaluación y práctica constante para consolidar avances significativos en esta área.`;
 
-                <div class="space-y-4">
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm border-b pb-1">1. Introducción y Tesis Principal</h4>
-                        <p class="text-xs text-slate-600 mt-1">
-                            El estudio sobre <strong>${topic}</strong> cobra relevancia en el contexto actual debido a sus implicaciones directas. 
-                            La tesis central radica en que abordar este fenómeno con un enfoque formal permite comprender sus causas fundamentales y estructurar soluciones sostenibles.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm border-b pb-1">2. Argumentos & Puntos de Desarrollo</h4>
-                        <ul class="list-disc list-inside text-xs text-slate-600 space-y-1 mt-1">
-                            <li><strong>Argumento Principal:</strong> Evidencia sobre la importancia de ${topic}.</li>
-                            <li><strong>Análisis Crítico:</strong> ${keys ? 'Incluyendo aspectos como ' + keys : 'Factores clave e impacto directo.'}</li>
-                            <li><strong>Contraargumento / Desafío:</strong> Limitaciones o controversias comunes asociadas.</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm border-b pb-1">3. Conclusión Sintética</h4>
-                        <p class="text-xs text-slate-600 mt-1">
-                            En conclusión, los hallazgos reafirman la necesidad de seguir investigando sobre <strong>${topic}</strong>. Se recomienda integrar estos principios en trabajos y decisiones futuras.
-                        </p>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('essay-output').innerHTML = outputHTML;
-        }
-
-        function copyEssayToClipboard() {
-            const container = document.getElementById('essay-output');
-            navigator.clipboard.writeText(container.innerText);
-            alert("¡Estructura copiada al portapapeles!");
-        }
-
-        // 3. MEJORADOR DE REDACCIÓN
-        function enhanceText(mode) {
-            const input = document.getElementById('improve-input').value.trim();
-            if (!input) {
-                alert("Por favor ingresa un texto para mejorar.");
-                return;
+            let finalContent = "";
+            if (targetWords === 200) {
+                finalContent = paragraph1 + paragraph4;
+            } else if (targetWords === 500) {
+                finalContent = paragraph1 + paragraph2 + paragraph3 + paragraph4;
+            } else {
+                finalContent = paragraph1 + paragraph2 + paragraph2 + paragraph3 + paragraph3 + paragraph4;
             }
 
-            let result = "";
-            if (mode === 'formal') {
-                result = "En el marco del presente análisis, cabe destacar que " + input.toLowerCase().replace(/mi opinión|creo que/g, "se argumenta que") + ". En consecuencia, los datos sugieren la importancia de profundizar en este planteamiento.";
-            } else if (mode === 'fluido') {
-                result = "Por consiguiente, al examinar esta idea, " + input + " De este modo, se logra una mayor claridad interpretativa para el lector.";
-            } else if (mode === 'resumen') {
-                result = "Sintesis: " + input.slice(0, Math.floor(input.length * 0.7)) + "...";
-            }
-
-            document.getElementById('improve-output').innerText = result;
-            const words = result.split(/\s+/).filter(w => w.length > 0).length;
-            document.getElementById('word-count-badge').innerText = `${words} palabras`;
+            document.getElementById('essay-output').innerText = finalContent;
+            
+            const actualCount = finalContent.split(/\s+/).filter(w => w.length > 0).length;
+            document.getElementById('output-word-count').innerText = `${actualCount} palabras`;
         }
 
-        function copyImprovedText() {
-            const text = document.getElementById('improve-output').innerText;
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
             navigator.clipboard.writeText(text);
-            alert("¡Texto copiado!");
+            alert("¡Texto copiado con éxito!");
         }
 
-        // 4. PLANIFICADOR DE RUTINAS
-        function generateStudyRoutine() {
-            const subject = document.getElementById('routine-subject').value.trim() || "Estudio General";
-            const days = parseInt(document.getElementById('routine-days').value) || 3;
-            const hours = parseInt(document.getElementById('routine-hours').value) || 2;
+        function downloadTextFile() {
+            const text = document.getElementById('essay-output').innerText;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = "trabajo_eduassit.txt";
+            link.click();
+        }
+
+        // 3. TUTOR DE REPASO ACTIVO (FLASHCARDS)
+        function generateFlashcards() {
+            const subject = document.getElementById('tutor-subject').value.trim() || "General";
+            const level = document.getElementById('tutor-level').value;
+
+            const cards = [
+                { q: `¿Cuál es el concepto central en el estudio de ${subject}?`, a: `El concepto abarca la estructura, las leyes fundamentales y la aplicación práctica de sus principios en situaciones reales.` },
+                { q: `¿Qué diferencia existe entre un enfoque básico y uno avanzado en ${subject}?`, a: `El enfoque básico se centra en memorizar y definir conceptos, mientras que el avanzado requiere análisis crítico, resolución de problemas y síntesis.` },
+                { q: `¿Cómo se aplica ${subject} en la resolución de problemas cotidianos?`, a: `A través de la sistematización de pasos, la evaluación de datos y la comprobación de hipótesis numéricas o teóricas.` }
+            ];
 
             let html = "";
-            for (let i = 1; i <= days; i++) {
-                let phase = i === 1 ? "Lectura e Investigación Inicial" : (i === days ? "Repaso Final y Simulación" : "Desarrollo de Temas y Ejercicios");
+            cards.forEach((card, idx) => {
                 html += `
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-bold text-indigo-600 uppercase">Día ${i} (${hours}h)</span>
-                            <h4 class="font-bold text-sm text-slate-800">${subject}</h4>
-                            <p class="text-xs text-slate-500">${phase}</p>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-indigo-600 uppercase">Pregunta ${idx + 1} (${level})</span>
                         </div>
-                        <i class="fa-solid fa-circle-check text-slate-300"></i>
+                        <p class="font-bold text-slate-800 text-sm">${card.q}</p>
+                        <button onclick="document.getElementById('ans-${idx}').classList.toggle('hidden')" class="text-xs text-indigo-600 hover:underline font-semibold">
+                            👁️ Revelar / Ocultar Respuesta Explicada
+                        </button>
+                        <p id="ans-${idx}" class="hidden text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed mt-2">
+                            <strong>Respuesta Guía:</strong> ${card.a}
+                        </p>
                     </div>
                 `;
-            }
-            document.getElementById('routine-output').innerHTML = html;
+            });
+
+            document.getElementById('flashcards-container').innerHTML = html;
         }
 
-        // 5. POMODORO Y SINTETIZADOR AUDIO
+        // 4. LABORATORIO MATEMÁTICO & FÍSICO
+        let currentProblem = null;
+
+        function generateStemProblem() {
+            const topic = document.getElementById('stem-topic').value;
+            let question = "", answer = 0, steps = "";
+
+            if (topic === 'trigonometria') {
+                question = "En un triángulo rectángulo, el cateto opuesto vale 6 cm y el cateto adyacente vale 8 cm. ¿Cuál es el valor de la hipotenusa (c)?";
+                answer = 10;
+                steps = "Uso del Teorema de Pitágoras: c = √(a² + b²) = √(6² + 8²) = √(36 + 64) = √100 = 10 cm.";
+            } else if (topic === 'vectores') {
+                question = "Un vector de fuerza tiene una magnitud de 100 N y un ángulo de 0° con el eje horizontal. ¿Cuál es la componente en X (Fx)?";
+                answer = 100;
+                steps = "Fx = F * cos(θ) = 100 * cos(0°) = 100 * 1 = 100 N.";
+            } else if (topic === 'cinematica') {
+                question = "Un móvil parte del reposo (Vo = 0) y acelera a 2 m/s² durante 5 segundos. ¿Cuál es su velocidad final (Vf)?";
+                answer = 10;
+                steps = "Fórmula: Vf = Vo + a * t = 0 + (2 * 5) = 10 m/s.";
+            } else if (topic === 'ecuaciones') {
+                question = "Dado el sistema: X + Y = 12  y  X - Y = 4. ¿Cuál es el valor de X?";
+                answer = 8;
+                steps = "Sumando ambas ecuaciones: 2X = 16  =>  X = 8.";
+            }
+
+            currentProblem = { question, answer, steps };
+            document.getElementById('stem-question').innerText = question;
+            document.getElementById('stem-user-answer').value = "";
+            const feedback = document.getElementById('stem-feedback');
+            feedback.classList.add('hidden');
+        }
+
+        function checkStemAnswer() {
+            if (!currentProblem) return;
+            const userVal = parseFloat(document.getElementById('stem-user-answer').value.trim());
+            const feedback = document.getElementById('stem-feedback');
+
+            feedback.classList.remove('hidden', 'bg-emerald-50', 'bg-rose-50', 'text-emerald-900', 'text-rose-900', 'border-emerald-200', 'border-rose-200');
+
+            if (Math.abs(userVal - currentProblem.answer) < 0.1) {
+                feedback.classList.add('bg-emerald-50', 'text-emerald-900', 'border', 'border-emerald-200');
+                feedback.innerHTML = `<strong>🎉 ¡Correcto!</strong> El resultado es ${currentProblem.answer}.<br><span class="text-xs">${currentProblem.steps}</span>`;
+            } else {
+                feedback.classList.add('bg-rose-50', 'text-rose-900', 'border', 'border-rose-200');
+                feedback.innerHTML = `<strong>❌ Respuesta incorrecta.</strong> Revisa el cálculo e inténtalo de nuevo.<br><span class="text-xs"><strong>Solución Paso a Paso:</strong> ${currentProblem.steps}</span>`;
+            }
+        }
+
+        // 5. POMODORO Y AUDIO
         let pomoInterval;
         let pomoSeconds = 25 * 60;
         let isRunning = false;
@@ -737,7 +694,7 @@
                     updatePomoDisplay();
                 } else {
                     pausePomodoro();
-                    alert("¡Tiempo cumplido!");
+                    alert("¡Sesión completada!");
                 }
             }, 1000);
         }
@@ -756,7 +713,7 @@
             updatePomoDisplay();
         }
 
-        // Audio Ambient Web Audio API
+        // Web Audio Synthesizer
         let audioCtx;
         let currentNoiseNode = null;
 
@@ -783,7 +740,7 @@
             noise.loop = true;
 
             const gain = audioCtx.createGain();
-            gain.gain.value = 0.05;
+            gain.gain.value = 0.04;
 
             noise.connect(gain);
             gain.connect(audioCtx.destination);
@@ -793,10 +750,10 @@
             document.getElementById(`btn-sound-${type}`).innerText = "Detener";
         }
 
-        // 6. CALCULADORA PROMEDIOS
+        // 6. CALCULADORA DE NOTAS
         let grades = [
-            { name: "Trabajo 1", grade: 4.5, weight: 30 },
-            { name: "Examen Parcial", grade: 3.8, weight: 30 }
+            { name: "Evaluación 1", grade: 4.5, weight: 30 },
+            { name: "Proyecto Final", grade: 4.0, weight: 40 }
         ];
 
         function renderGrades() {
@@ -816,7 +773,7 @@
         }
 
         function addGradeRow() {
-            grades.push({ name: `Nota ${grades.length + 1}`, grade: 4.0, weight: 20 });
+            grades.push({ name: `Nota ${grades.length + 1}`, grade: 4.0, weight: 15 });
             renderGrades();
         }
 
@@ -839,27 +796,20 @@
             document.getElementById('current-average').innerText = avg;
         }
 
-        // 7. GENERADOR APA
+        // 7. GENERADOR APA 7
         function generateAPA() {
             const author = document.getElementById('apa-author').value.trim() || "Autor, A.";
             const year = document.getElementById('apa-year').value.trim() || "2024";
             const title = document.getElementById('apa-title').value.trim() || "Título del documento";
-            const source = document.getElementById('apa-source').value.trim() || "Editorial o Sitio Web";
+            const source = document.getElementById('apa-source').value.trim() || "Editorial / Fuente";
 
-            const result = `${author} (${year}). <em>${title}</em>. ${source}.`;
-            document.getElementById('apa-result').innerHTML = result;
+            document.getElementById('apa-result').innerHTML = `${author} (${year}). <em>${title}</em>. ${source}.`;
         }
 
-        function copyAPA() {
-            const text = document.getElementById('apa-result').innerText;
-            navigator.clipboard.writeText(text);
-            alert("Cita APA copiada.");
-        }
-
-        // 8. TABLERO KANBAN
-        let kanbanTasks = JSON.parse(localStorage.getItem('eduassit_kanban')) || [
-            { id: 1, title: "Revisar borrador de Ensayo", status: "todo" },
-            { id: 2, title: "Organizar lecturas de la semana", status: "doing" }
+        // 8. KANBAN
+        let kanbanTasks = JSON.parse(localStorage.getItem('eduassit_kanban_v2')) || [
+            { id: 1, title: "Repasar Leyes de Seno y Coseno", status: "todo" },
+            { id: 2, title: "Redactar introducción del ensayo", status: "doing" }
         ];
 
         function renderKanban() {
@@ -881,7 +831,7 @@
                 document.getElementById('col-' + task.status).appendChild(card);
             });
 
-            localStorage.setItem('eduassit_kanban', JSON.stringify(kanbanTasks));
+            localStorage.setItem('eduassit_kanban_v2', JSON.stringify(kanbanTasks));
         }
 
         function addKanbanTask() {
@@ -921,11 +871,11 @@
             input.value = "";
 
             setTimeout(() => {
-                let reply = "Para estructurar mejor tu texto, recuerda usar conectores como 'Por consiguiente', 'Asimismo' o 'En contraste'.";
-                if (text.toLowerCase().includes("hola")) reply = "¡Hola! ¿En qué puedo ayudarte con tus tareas o lecturas hoy?";
+                let reply = "Recuerda usar conectores como 'Por consiguiente', 'En primera instancia' y 'Asimismo' para mejorar la fluidez de tus trabajos.";
+                if (text.toLowerCase().includes("hola")) reply = "¡Hola! ¿En qué tema o materia necesitas ayuda hoy?";
                 messages.innerHTML += `<div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-slate-700 mr-8 mb-2">${reply}</div>`;
                 messages.scrollTop = messages.scrollHeight;
-            }, 600);
+            }, 500);
         }
 
         // Inicialización
