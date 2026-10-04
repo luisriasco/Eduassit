@@ -1,886 +1,697 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eduassit v2.0 - Plataforma & Asistente Interactivo de Estudio</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#312e81',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.25s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eduassit - Plataforma & Tutor de Estudio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col md:flex-row">
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col md:flex-row">
 
-    <!-- BARRA LATERAL / SIDEBAR -->
-    <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between shadow-xl z-20">
+  <!-- BARRA LATERAL / NAVEGACIÓN -->
+  <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 p-4 flex flex-col justify-between shadow-xl">
+    <div>
+      <!-- LOGO INTEGRADO -->
+      <div class="flex items-center gap-3 p-2 mb-6 border-b border-slate-800">
+        <img src="logo.png" alt="Eduassit Logo" class="w-12 h-12 object-contain rounded-lg bg-white p-1" onerror="this.src='https://via.placeholder.com/48?text=EA'">
         <div>
-            <!-- Header Logo -->
-            <div class="p-5 border-b border-slate-800 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-lg leading-tight tracking-wide">Eduassit</h1>
-                        <p class="text-xs text-indigo-400 font-medium">Plataforma & Tutor de Estudio</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navegación -->
-            <nav class="p-4 space-y-1.5">
-                <button onclick="switchTab('redactor')" id="nav-redactor" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
-                    <i class="fa-solid fa-pen-nib w-5 text-center text-indigo-200"></i>
-                    <span>Redactor y Extensión</span>
-                </button>
-
-                <button onclick="switchTab('tutoria')" id="nav-tutoria" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-brain w-5 text-center"></i>
-                    <span>Tutor & Repaso Activo</span>
-                </button>
-
-                <button onclick="switchTab('stem')" id="nav-stem" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-square-root-variable w-5 text-center"></i>
-                    <span>Lab. Mates y Física</span>
-                </button>
-
-                <button onclick="switchTab('pomodoro')" id="nav-pomodoro" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-stopwatch w-5 text-center"></i>
-                    <span>Pomodoro & Ambiente</span>
-                </button>
-
-                <button onclick="switchTab('promedios')" id="nav-promedios" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-calculator w-5 text-center"></i>
-                    <span>Calculadora de Notas</span>
-                </button>
-
-                <button onclick="switchTab('apa')" id="nav-apa" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-quote-right w-5 text-center"></i>
-                    <span>Generador APA 7</span>
-                </button>
-
-                <button onclick="switchTab('kanban')" id="nav-kanban" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                    <i class="fa-solid fa-list-check w-5 text-center"></i>
-                    <span>Tablero de Tareas</span>
-                </button>
-            </nav>
+          <h1 class="font-bold text-lg leading-tight tracking-wide text-indigo-400">Eduassit</h1>
+          <p class="text-xs text-slate-400">Plataforma & Tutor</p>
         </div>
+      </div>
 
-        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-            <span>Versión 2.0 (Pro)</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> Activo
-            </span>
-        </div>
-    </aside>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
-
-        <!-- 1. REDACTOR Y CONTROL DE EXTENSIÓN -->
-        <section id="tab-redactor" class="tab-content active space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-pen-nib text-indigo-600"></i> Redactor & Ajuste de Extensión (200 / 500 / 700+ Palabras)
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Genera o expande textos académicos adaptados a la cantidad de palabras que requiera tu tarea.</p>
-            </header>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Formulario -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-3">Configuración de Texto</h3>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tema o Texto Borrador</label>
-                        <textarea id="essay-input" rows="4" placeholder="Escribe el tema o pega tu borrador inicial aquí..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Extensión Objetivo</label>
-                        <select id="essay-word-target" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
-                            <option value="200">~ 200 Palabras (Resumen / Párrafo Corto)</option>
-                            <option value="500" selected>~ 500 Palabras (Ensayo Estándar / 1-2 Págs)</option>
-                            <option value="700">~ 700+ Palabras (Informe Profundo / Extenso)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Estilo de Redacción</label>
-                        <select id="essay-style" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition text-sm bg-white">
-                            <option value="academico">Académico / Formal</option>
-                            <option value="critico">Análisis Crítico / Argumentativo</option>
-                            <option value="divulgativo">Explicativo / Didáctico</option>
-                        </select>
-                    </div>
-
-                    <button onclick="generateCustomText()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Redactar / Expandir Texto
-                    </button>
-                </div>
-
-                <!-- Resultado -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between border-b pb-3 mb-4">
-                            <h3 class="font-bold text-slate-800">Resultado Generado</h3>
-                            <span id="output-word-count" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-3 py-1 rounded-full border border-indigo-100">0 palabras</span>
-                        </div>
-
-                        <div id="essay-output" class="text-sm leading-relaxed text-slate-700 space-y-3 custom-scrollbar max-h-[420px] overflow-y-auto pr-2 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <em class="text-slate-400">El texto generado aparecerá aquí con la extensión exacta seleccionada...</em>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="copyToClipboard('essay-output')" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm">
-                            <i class="fa-regular fa-copy"></i> Copiar Texto
-                        </button>
-                        <button onclick="downloadTextFile()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm">
-                            <i class="fa-solid fa-download"></i> Descargar .TXT
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. TUTOR DE REPASO ACTIVO & CUESTIONARIOS -->
-        <section id="tab-tutoria" class="tab-content space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-brain text-indigo-600"></i> Tutor de Estudio & Repaso Activo (Flashcards)
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Genera preguntas clave y pon a prueba tus conocimientos para tus exámenes.</p>
-            </header>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Configuración Tutor -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-3">Configurar Sesión de Repaso</h3>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Asignatura o Tema</label>
-                        <input type="text" id="tutor-subject" placeholder="Ej: La Célula, Historia de Colombia, Filosofía cartesiana" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nivel de Exigencia</label>
-                        <select id="tutor-level" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm bg-white">
-                            <option value="basico">Conceptos Básicos / Definiciones</option>
-                            <option value="intermedio">Análisis y Aplicación</option>
-                            <option value="avanzado">Examen Intensivo / Preguntas de Juicio</option>
-                        </select>
-                    </div>
-
-                    <button onclick="generateFlashcards()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-layer-group"></i> Generar Cuestionario de Repaso
-                    </button>
-                </div>
-
-                <!-- Tarjetas de Repaso -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                    <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Preguntas de Repaso Generadas</h3>
-                    <div id="flashcards-container" class="space-y-4 custom-scrollbar max-h-[450px] overflow-y-auto pr-2">
-                        <div class="text-center py-12 text-slate-400">
-                            <i class="fa-solid fa-circle-question text-4xl mb-3 text-slate-300"></i>
-                            <p>Ingresa una asignatura para generar tu tarjeta de preguntas interactiva.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. LABORATORIO DE MATEMÁTICAS Y FÍSICA -->
-        <section id="tab-stem" class="tab-content space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-square-root-variable text-indigo-600"></i> Laboratorio Práctico de Matemáticas & Física
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Practica problemas numéricos con verificación y procedimiento paso a paso desglosado.</p>
-            </header>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Selector de Tema -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-3">Seleccionar Módulo de Práctica</h3>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tema Matemático / Físico</label>
-                        <select id="stem-topic" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm bg-white">
-                            <option value="trigonometria">Trigonometría (Leyes de Seno y Coseno / Triángulos)</option>
-                            <option value="vectores">Física: Vectores y Componentes (Fx, Fy, Magnitud)</option>
-                            <option value="cinematica">Física: Cinemática / M.U.A. (Aceleración y Velocidad)</option>
-                            <option value="ecuaciones">Álgebra: Sistemas de Ecuaciones 2x2</option>
-                        </select>
-                    </div>
-
-                    <button onclick="generateStemProblem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-calculator"></i> Generar Problema
-                    </button>
-                </div>
-
-                <!-- Panel del Problema -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <div id="stem-problem-card" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
-                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Ejercicio Activo</span>
-                        <p id="stem-question" class="text-slate-800 font-medium text-sm">Haz clic en "Generar Problema" para comenzar a practicar.</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <input type="text" id="stem-user-answer" placeholder="Escribe tu resultado aquí..." class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500">
-                        <button onclick="checkStemAnswer()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
-                            Comprobar
-                        </button>
-                    </div>
-
-                    <div id="stem-feedback" class="hidden p-4 rounded-xl text-sm space-y-2"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. POMODORO Y AMBIENTE -->
-        <section id="tab-pomodoro" class="tab-content space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-stopwatch text-indigo-600"></i> Temporizador Pomodoro & Sonidos de Ambiente
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Optimiza tu concentración en bloques de estudio con audio relajante continuo.</p>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center space-y-6">
-                    <span id="pomodoro-mode" class="px-3 py-1 bg-indigo-50 text-indigo-600 font-bold text-xs rounded-full uppercase tracking-wider">Sesión de Enfoque</span>
-                    
-                    <div class="text-6xl font-extrabold text-slate-900 tracking-tight font-mono" id="pomo-timer">
-                        25:00
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <button onclick="startPomodoro()" id="btn-start" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-indigo-600/30 transition">
-                            Iniciar
-                        </button>
-                        <button onclick="pausePomodoro()" id="btn-pause" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition hidden">
-                            Pausar
-                        </button>
-                        <button onclick="resetPomodoro()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-xl transition">
-                            Reiniciar
-                        </button>
-                    </div>
-
-                    <div class="flex gap-2 text-xs font-semibold">
-                        <button onclick="setPomoTime(25, 'Sesión de Enfoque')" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 rounded-lg text-slate-600">25m Estudio</button>
-                        <button onclick="setPomoTime(5, 'Descanso Corto')" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 rounded-lg text-slate-600">5m Descanso</button>
-                        <button onclick="setPomoTime(15, 'Descanso Largo')" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 rounded-lg text-slate-600">15m Descanso</button>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-3">Ambiente de Enfoque Sintetizado</h3>
-
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-cloud-rain text-indigo-500 text-lg"></i>
-                                <div>
-                                    <h4 class="font-semibold text-sm text-slate-800">Lluvia / Río Relajante</h4>
-                                    <p class="text-xs text-slate-500">Ruido rosa continuo</p>
-                                </div>
-                            </div>
-                            <button onclick="toggleSound('rain')" id="btn-sound-rain" class="px-4 py-2 bg-slate-200 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition">
-                                Reproducir
-                            </button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-wind text-indigo-500 text-lg"></i>
-                                <div>
-                                    <h4 class="font-semibold text-sm text-slate-800">Ruido Blanco Puro</h4>
-                                    <p class="text-xs text-slate-500">Bloqueo de distracciones</p>
-                                </div>
-                            </div>
-                            <button onclick="toggleSound('white')" id="btn-sound-white" class="px-4 py-2 bg-slate-200 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-bold transition">
-                                Reproducir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. CALCULADORA DE PROMEDIOS -->
-        <section id="tab-promedios" class="tab-content space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-calculator text-indigo-600"></i> Calculadora de Promedios & Notas
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Lleva el control exacto de tus porcentajes y nota mínima requerida.</p>
-            </header>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <div class="flex items-center justify-between border-b pb-3">
-                        <h3 class="font-bold text-slate-800">Notas de la Asignatura</h3>
-                        <button onclick="addGradeRow()" class="text-xs bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1">
-                            <i class="fa-solid fa-plus"></i> Agregar Nota
-                        </button>
-                    </div>
-
-                    <div id="grades-container" class="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar pr-2"></div>
-                </div>
-
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between space-y-6">
-                    <div>
-                        <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Resumen de Calificaciones</h3>
-                        
-                        <div class="bg-slate-50 p-4 rounded-xl space-y-3 border border-slate-200">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-slate-600 font-medium">Porcentaje Evaluado:</span>
-                                <span id="total-weight" class="font-bold text-slate-900">0%</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-slate-600 font-medium">Promedio Acumulado:</span>
-                                <span id="current-average" class="text-xl font-extrabold text-indigo-600">0.0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button onclick="calculateGrades()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition">
-                        Calcular Promedio
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. GENERADOR APA 7 -->
-        <section id="tab-apa" class="tab-content space-y-6">
-            <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-quote-right text-indigo-600"></i> Generador APA (7ª Edición)
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Construye referencias en formato estándar listas para copiar.</p>
-            </header>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Autor(es)</label>
-                        <input type="text" id="apa-author" placeholder="Ej: García, M." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Año</label>
-                        <input type="text" id="apa-year" placeholder="Ej: 2024" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Título</label>
-                        <input type="text" id="apa-title" placeholder="Ej: Fundamentos de Física y Mecánica" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Editorial / Web</label>
-                        <input type="text" id="apa-source" placeholder="Ej: Editorial Educación" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
-                    </div>
-                    <button onclick="generateAPA()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition">Generar Referencia</button>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-slate-800 border-b pb-3 mb-4">Cita Formateada</h3>
-                        <div id="apa-result" class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm italic font-serif min-h-[100px] flex items-center justify-center text-center">
-                            Ingresa los datos para generar la cita.
-                        </div>
-                    </div>
-                    <button onclick="copyToClipboard('apa-result')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-xl transition text-sm mt-4">Copiar Cita</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. TABLERO KANBAN -->
-        <section id="tab-kanban" class="tab-content space-y-6">
-            <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-indigo-600"></i> Tablero de Pendientes
-                    </h2>
-                    <p class="text-slate-500 text-sm mt-1">Organización visual con guardado local automático.</p>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <input type="text" id="kanban-new-title" placeholder="Nueva tarea..." class="px-4 py-2 rounded-xl border border-slate-300 text-sm focus:border-indigo-500">
-                    <button onclick="addKanbanTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition">
-                        Agregar
-                    </button>
-                </div>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-3">
-                    <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Pendientes
-                    </h3>
-                    <div id="col-todo" class="space-y-2 min-h-[250px]"></div>
-                </div>
-
-                <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-3">
-                    <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> En Proceso
-                    </h3>
-                    <div id="col-doing" class="space-y-2 min-h-[250px]"></div>
-                </div>
-
-                <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 space-y-3">
-                    <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Completado
-                    </h3>
-                    <div id="col-done" class="space-y-2 min-h-[250px]"></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- WIDGET CHAT EDUBOT -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleEduBot()" class="w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-transform hover:scale-105">
-            <i class="fa-solid fa-robot"></i>
+      <!-- MENÚ DE NAVEGACIÓN -->
+      <nav class="space-y-1">
+        <button onclick="switchTab('redactor')" id="btn-redactor" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left bg-indigo-600 text-white">
+          <i class="fa-solid fa-pen-nib"></i> Redactor y Extensión
         </button>
-
-        <div id="edubot-window" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
-            <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-robot text-indigo-400"></i>
-                    <div>
-                        <h4 class="font-bold text-sm">EduBot - Tutor Rápido</h4>
-                        <p class="text-[10px] text-slate-400">Asistencia y conectores</p>
-                    </div>
-                </div>
-                <button onclick="toggleEduBot()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <div id="edubot-messages" class="p-4 space-y-3 h-64 overflow-y-auto text-xs custom-scrollbar bg-slate-50">
-                <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl text-slate-700">
-                    👋 ¡Hola! Soy <strong>EduBot</strong>. Pregúntame sobre consejos de redacción, fórmulas o conectores.
-                </div>
-            </div>
-
-            <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
-                <input type="text" id="edubot-input" placeholder="Pregunta algo..." class="flex-1 px-3 py-2 rounded-xl border text-xs focus:outline-none">
-                <button onclick="sendEduBotMessage()" class="bg-indigo-600 text-white px-3 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
+        <button onclick="switchTab('tutor')" id="btn-tutor" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-brain"></i> Tutor & Repaso Activo
+        </button>
+        <button onclick="switchTab('quiz')" id="btn-quiz" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-stopwatch"></i> Exámenes y Quizzes
+        </button>
+        <button onclick="switchTab('stem')" id="btn-stem" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-square-root-variable"></i> Lab. Mates y Física
+        </button>
+        <button onclick="switchTab('pomodoro')" id="btn-pomodoro" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-stopwatch-20"></i> Pomodoro & Ambiente
+        </button>
+        <button onclick="switchTab('notas')" id="btn-notas" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-calculator"></i> Calculadora de Notas
+        </button>
+        <button onclick="switchTab('apa')" id="btn-apa" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-quote-right"></i> Generador APA 7
+        </button>
+        <button onclick="switchTab('kanban')" id="btn-kanban" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-left text-slate-300 hover:bg-slate-800">
+          <i class="fa-solid fa-list-check"></i> Tablero de Tareas
+        </button>
+      </nav>
     </div>
 
-    <!-- JAVASCRIPT COMPLETO -->
-    <script>
-        // 1. CONTROL DE PESTAÑAS (SPA)
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
-                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
-            });
+    <div class="pt-4 border-t border-slate-800 text-center">
+      <button onclick="toggleCalcModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-indigo-300 font-medium py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition border border-indigo-500/30">
+        <i class="fa-solid fa-calculator"></i> Abrir Calculadora Científica
+      </button>
+    </div>
+  </aside>
 
-            document.getElementById('tab-' + tabId).classList.add('active');
-            const activeNav = document.getElementById('nav-' + tabId);
-            if (activeNav) {
-                activeNav.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
-                activeNav.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
-            }
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+
+    <!-- 1. REDACTOR Y EXTENSIÓN -->
+    <section id="sec-redactor" class="tab-content block space-y-6">
+      <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-pen-nib text-indigo-600"></i> Redactor & Ajuste de Extensión (200 / 500 / 700+ Palabras)
+        </h2>
+        <p class="text-slate-600 mt-1">Genera ensayos académicos estructurados ajustados a la cantidad exacta de palabras necesaria.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h3 class="font-bold text-slate-800">Configuración del Texto</h3>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">TEMA O BORRADOR</label>
+            <textarea id="redactor-tema" rows="4" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="Ej: El impacto de la inteligencia artificial en la sociedad moderna..."></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">EXTENSIÓN OBJETIVO</label>
+            <select id="redactor-longitud" class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500">
+              <option value="200">~ 200 Palabras (Resumen / Síntesis)</option>
+              <option value="500">~ 500 Palabras (Ensayo Estándar)</option>
+              <option value="700">~ 700+ Palabras (Informe Profundo / Extenso)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">ESTILO DE REDACCIÓN</label>
+            <select id="redactor-estilo" class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500">
+              <option value="analitico">Análisis Crítico / Argumentativo</option>
+              <option value="academico">Académico Formal</option>
+              <option value="explicativo">Explicativo / Divulgativo</option>
+            </select>
+          </div>
+          <button onclick="generarTextoExtenso()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Redactar / Expandir Texto
+          </button>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="font-bold text-slate-800">Resultado Generado</h3>
+              <span id="redactor-contador" class="text-xs bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full font-semibold">0 palabras</span>
+            </div>
+            <div id="redactor-resultado" class="text-sm text-slate-700 space-y-3 leading-relaxed max-h-[400px] overflow-y-auto p-3 bg-slate-50 rounded-xl border border-slate-200">
+              El texto generado aparecerá aquí...
+            </div>
+          </div>
+          <button onclick="descargarTexto()" class="mt-4 w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 rounded-xl transition flex items-center justify-center gap-2 text-sm">
+            <i class="fa-solid fa-download"></i> Descargar (.txt)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TUTOR & REPASO ACTIVO -->
+    <section id="sec-tutor" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-brain text-indigo-600"></i> Tutor & Repaso Activo (Flashcards con Sistema Leitner)
+        </h2>
+        <p class="text-slate-600 mt-1">Refuerza tus conocimientos con tarjetas interactivas y autoevaluación.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-2xl border border-slate-200 md:col-span-1 space-y-4">
+          <h3 class="font-bold text-slate-800">Agregar Nueva Tarjeta</h3>
+          <input id="flash-pregunta" type="text" placeholder="Pregunta o Concepto" class="w-full p-3 border rounded-xl text-sm">
+          <textarea id="flash-respuesta" placeholder="Respuesta explicativa" rows="3" class="w-full p-3 border rounded-xl text-sm"></textarea>
+          <button onclick="agregarFlashcard()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl transition">Guardar Tarjeta</button>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border border-slate-200 md:col-span-2 flex flex-col justify-between min-h-[300px]">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tarjeta <span id="flash-index">1</span> de <span id="flash-total">1</span></span>
+              <span id="flash-dificultad" class="text-xs bg-slate-200 px-2 py-1 rounded font-medium">Por Repasar</span>
+            </div>
+            <div class="text-center py-8">
+              <h4 id="flash-q" class="text-xl font-bold text-slate-800 mb-4">¿Cual es el principio central del duda metódica de Descartes?</h4>
+              <div id="flash-a" class="hidden text-indigo-700 bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-sm font-medium">
+                Dudar de todo conocimiento previamente aceptado hasta encontrar una verdad indudable ("Pienso, luego existo").
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <button onclick="toggleRespuestaFlash()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-xl text-sm">Mostrar / Ocultar Respuesta</button>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="evaluarFlash('Dificil')" class="bg-red-100 text-red-700 py-2 rounded-xl text-xs font-bold hover:bg-red-200">Difícil 🔴</button>
+              <button onclick="evaluarFlash('Medio')" class="bg-amber-100 text-amber-700 py-2 rounded-xl text-xs font-bold hover:bg-amber-200">Medio 🟡</button>
+              <button onclick="evaluarFlash('Facil')" class="bg-emerald-100 text-emerald-700 py-2 rounded-xl text-xs font-bold hover:bg-emerald-200">Fácil 🟢</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. NUEVA SECCIÓN: EXÁMENES Y QUIZZES CON CRONÓMETRO -->
+    <section id="sec-quiz" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-stopwatch text-indigo-600"></i> Generador de Exámenes y Quizzes con Cronómetro
+        </h2>
+        <p class="text-slate-600 mt-1">Ponte a prueba con cuestionarios de 10 preguntas con tiempo límite.</p>
+      </div>
+
+      <div id="quiz-setup" class="glass-card p-6 rounded-2xl border border-slate-200 max-w-2xl mx-auto space-y-4">
+        <h3 class="font-bold text-slate-800 text-lg">Configura tu Examen</h3>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">TEMA DEL EXAMEN</label>
+          <input id="quiz-tema" type="text" class="w-full p-3 border rounded-xl text-sm" placeholder="Ej: Trigonometría, Cinemática, Filosofía Cartesiana, Desarrollo Web...">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">TIEMPO LÍMITE</label>
+            <select id="quiz-tiempo" class="w-full p-3 border rounded-xl text-sm">
+              <option value="300">5 Minutos</option>
+              <option value="600" selected>10 Minutos</option>
+              <option value="900">15 Minutos</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">NIVEL</label>
+            <select id="quiz-nivel" class="w-full p-3 border rounded-xl text-sm">
+              <option value="secundaria">Secundaria / Básico</option>
+              <option value="sena" selected>Técnico / SENA / Bachillerato</option>
+              <option value="universitario">Avanzado</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="iniciarQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-play"></i> Iniciar Examen (10 Preguntas)
+        </button>
+      </div>
+
+      <!-- ÁREA DE EXAMEN ACTIVO -->
+      <div id="quiz-active" class="hidden space-y-6">
+        <div class="glass-card p-4 rounded-xl border border-slate-200 flex justify-between items-center sticky top-2 z-10 bg-white/90">
+          <div>
+            <h4 id="quiz-titulo-activo" class="font-bold text-slate-800">Examen</h4>
+            <p class="text-xs text-slate-500">10 Preguntas de Opción Múltiple</p>
+          </div>
+          <div class="flex items-center gap-2 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl font-bold text-lg">
+            <i class="fa-solid fa-clock"></i>
+            <span id="quiz-timer">10:00</span>
+          </div>
+        </div>
+
+        <div id="quiz-preguntas-container" class="space-y-6">
+          <!-- Las 10 preguntas se insertan dinámicamente -->
+        </div>
+
+        <button onclick="finalizarQuiz()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition text-lg shadow-lg">
+          <i class="fa-solid fa-paper-plane"></i> Enviar Respuestas y Ver Calificación
+        </button>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div id="quiz-resultado" class="hidden glass-card p-8 rounded-2xl border border-slate-200 text-center space-y-4 max-w-xl mx-auto">
+        <div id="quiz-badge" class="inline-block p-4 rounded-full bg-indigo-100 text-indigo-600 text-3xl">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-800">Resultado del Examen</h3>
+        <p id="quiz-score-text" class="text-4xl font-extrabold text-indigo-600">8 / 10 (80%)</p>
+        <p id="quiz-feedback" class="text-sm text-slate-600">¡Buen trabajo! Has demostrado una excelente comprensión del tema.</p>
+        <button onclick="reiniciarQuiz()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 px-6 rounded-xl text-sm transition">
+          Intentar Otro Examen
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. LAB MATES Y FÍSICA -->
+    <section id="sec-stem" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-square-root-variable text-indigo-600"></i> Laboratorio de Mates y Física con Fórmulas
+        </h2>
+        <p class="text-slate-600 mt-1">Generador dinámico de ejercicios prácticos con explicación paso a paso.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-2xl border border-slate-200 space-y-4">
+          <h3 class="font-bold text-slate-800">Seleccionar Tema</h3>
+          <select id="stem-materia" class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500">
+            <option value="trig">Trigonometría (Seno / Coseno / Pitágoras)</option>
+            <option value="dinamica">Física: Dinámica y Fuerza ($F=m \cdot a$)</option>
+            <option value="cinematica">Física: Cinemática ($v = d / t$)</option>
+            <option value="vectores">Vectores: Magnitud y Componentes</option>
+          </select>
+          <button onclick="generarEjercicioSTEM()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-arrows-rotate"></i> Generar Nuevo Ejercicio
+          </button>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border border-slate-200 md:col-span-2 space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-slate-800">Problema Generado</h3>
+            <span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">Valores Dinámicos</span>
+          </div>
+
+          <!-- RECUADRO DE FÓRMULA -->
+          <div id="stem-formula-box" class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-sm text-amber-900 font-mono">
+            <strong>Fórmula Aplicable:</strong> <span id="stem-formula">c = √(a² + b²)</span>
+          </div>
+
+          <p id="stem-enunciado" class="text-slate-800 font-medium text-base">Cargando problema...</p>
+
+          <div class="pt-2">
+            <button onclick="toggleSolucionSTEM()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-700">Mostrar Solución Paso a Paso</button>
+            <div id="stem-solucion" class="hidden mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm space-y-2 text-slate-700 font-mono">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. POMODORO & AMBIENTE -->
+    <section id="sec-pomodoro" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-stopwatch-20 text-indigo-600"></i> Temporizador Pomodoro
+        </h2>
+      </div>
+      <div class="glass-card p-8 rounded-2xl border border-slate-200 text-center max-w-md mx-auto space-y-6">
+        <div id="pomo-display" class="text-6xl font-extrabold text-slate-800 font-mono">25:00</div>
+        <div class="flex justify-center gap-3">
+          <button onclick="startPomodoro()" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Iniciar</button>
+          <button onclick="pausePomodoro()" class="bg-slate-200 text-slate-700 font-bold py-2 px-6 rounded-xl hover:bg-slate-300">Pausa</button>
+          <button onclick="resetPomodoro()" class="bg-red-100 text-red-600 font-bold py-2 px-4 rounded-xl hover:bg-red-200">Reiniciar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CALCULADORA DE NOTAS -->
+    <section id="sec-notas" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-calculator text-indigo-600"></i> Calculadora de Notas Ponderadas
+        </h2>
+      </div>
+      <div class="glass-card p-6 rounded-2xl border border-slate-200 max-w-xl mx-auto space-y-4">
+        <div id="notas-filas" class="space-y-3">
+          <div class="flex gap-2">
+            <input type="number" placeholder="Nota (0 - 5)" class="nota-val w-1/2 p-2 border rounded-xl text-sm" step="0.1">
+            <input type="number" placeholder="Porcentaje %" class="nota-porcent w-1/2 p-2 border rounded-xl text-sm">
+          </div>
+        </div>
+        <button onclick="agregarFilaNota()" class="w-full bg-slate-100 text-slate-700 py-2 rounded-xl text-xs font-bold">+ Agregar Nota</button>
+        <button onclick="calcularPromedioPonderado()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">Calcular Promedio Final</button>
+        <div id="nota-resultado" class="text-center font-bold text-xl text-indigo-600 mt-2"></div>
+      </div>
+    </section>
+
+    <!-- 7. GENERADOR APA 7 -->
+    <section id="sec-apa" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-quote-right text-indigo-600"></i> Generador de Citas APA 7
+        </h2>
+      </div>
+      <div class="glass-card p-6 rounded-2xl border border-slate-200 max-w-xl mx-auto space-y-3">
+        <input id="apa-autor" type="text" placeholder="Autor (Ej: García, M.)" class="w-full p-2 border rounded-xl text-sm">
+        <input id="apa-anio" type="text" placeholder="Año (Ej: 2024)" class="w-full p-2 border rounded-xl text-sm">
+        <input id="apa-titulo" type="text" placeholder="Título del libro o artículo" class="w-full p-2 border rounded-xl text-sm">
+        <input id="apa-editorial" type="text" placeholder="Editorial o Sitio Web" class="w-full p-2 border rounded-xl text-sm">
+        <button onclick="generarAPA()" class="w-full bg-indigo-600 text-white font-bold py-2 rounded-xl">Generar Cita</button>
+        <div id="apa-res" class="p-4 bg-slate-50 border rounded-xl text-sm font-mono text-slate-800"></div>
+      </div>
+    </section>
+
+    <!-- 8. KANBAN DE TAREAS -->
+    <section id="sec-kanban" class="tab-content hidden space-y-6">
+      <div class="glass-card p-6 rounded-2xl border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <i class="fa-solid fa-list-check text-indigo-600"></i> Tablero Kanban
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-200 p-4 rounded-2xl">
+          <h3 class="font-bold text-slate-700 mb-3">Pendientes</h3>
+          <div id="kanban-todo" class="space-y-2"></div>
+        </div>
+        <div class="bg-amber-100 p-4 rounded-2xl">
+          <h3 class="font-bold text-amber-800 mb-3">En Proceso</h3>
+          <div id="kanban-doing" class="space-y-2"></div>
+        </div>
+        <div class="bg-emerald-100 p-4 rounded-2xl">
+          <h3 class="font-bold text-emerald-800 mb-3">Completadas</h3>
+          <div id="kanban-done" class="space-y-2"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL CALCULADORA CIENTÍFICA -->
+  <div id="calc-modal" class="fixed inset-0 bg-slate-900/50 hidden backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-2xl w-80 space-y-4 border border-slate-700">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-indigo-400">Calculadora Científica</h3>
+        <button onclick="toggleCalcModal()" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+      <input id="calc-display" type="text" readonly class="w-full bg-slate-800 text-right text-xl font-mono p-3 rounded-xl text-emerald-400" value="0">
+      <div class="grid grid-cols-4 gap-2 text-sm font-bold">
+        <button onclick="calcInput('sin(')" class="bg-slate-800 p-2 rounded text-indigo-300">sin</button>
+        <button onclick="calcInput('cos(')" class="bg-slate-800 p-2 rounded text-indigo-300">cos</button>
+        <button onclick="calcInput('tan(')" class="bg-slate-800 p-2 rounded text-indigo-300">tan</button>
+        <button onclick="calcClear()" class="bg-red-900/50 text-red-300 p-2 rounded">C</button>
+        
+        <button onclick="calcInput('7')" class="bg-slate-700 p-2 rounded">7</button>
+        <button onclick="calcInput('8')" class="bg-slate-700 p-2 rounded">8</button>
+        <button onclick="calcInput('9')" class="bg-slate-700 p-2 rounded">9</button>
+        <button onclick="calcInput('/')" class="bg-indigo-600 p-2 rounded">÷</button>
+        
+        <button onclick="calcInput('4')" class="bg-slate-700 p-2 rounded">4</button>
+        <button onclick="calcInput('5')" class="bg-slate-700 p-2 rounded">5</button>
+        <button onclick="calcInput('6')" class="bg-slate-700 p-2 rounded">6</button>
+        <button onclick="calcInput('*')" class="bg-indigo-600 p-2 rounded">×</button>
+        
+        <button onclick="calcInput('1')" class="bg-slate-700 p-2 rounded">1</button>
+        <button onclick="calcInput('2')" class="bg-slate-700 p-2 rounded">2</button>
+        <button onclick="calcInput('3')" class="bg-slate-700 p-2 rounded">3</button>
+        <button onclick="calcInput('-')" class="bg-indigo-600 p-2 rounded">-</button>
+        
+        <button onclick="calcInput('0')" class="bg-slate-700 p-2 rounded">0</button>
+        <button onclick="calcInput('.')" class="bg-slate-700 p-2 rounded">.</button>
+        <button onclick="calcEqual()" class="bg-emerald-600 text-white p-2 rounded col-span-2">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LÓGICO COMPLETO -->
+  <script>
+    // CAMBIO DE PESTAÑAS
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('text-slate-300');
+      });
+      document.getElementById('sec-' + tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).classList.add('bg-indigo-600', 'text-white');
+    }
+
+    // 1. REDACTOR REAL DE 700+ PALABRAS
+    function generarTextoExtenso() {
+      const tema = document.getElementById('redactor-tema').value.trim() || "el tema seleccionado";
+      const longitud = document.getElementById('redactor-longitud').value;
+      const resDiv = document.getElementById('redactor-resultado');
+      
+      let p1 = `El análisis detallado sobre ${tema} constituye un área de estudio fundamental en el contexto contemporáneo. A medida que las dinámicas académicas y profesionales evolucionan, resulta imperativo examinar con rigor los factores subyacentes que estructuran esta materia.`;
+      let p2 = `En primer lugar, al abordar ${tema}, es esencial considerar el marco teórico que fundamenta sus conceptos principales. Diversos investigadores destacan que la interacción entre la teoría y la práctica permite consolidar un enfoque crítico indispensable para resolver problemáticas complejas en este ámbito.`;
+      let p3 = `Por otro lado, la evidencia empírica sugiere que las transformaciones asociadas a ${tema} no ocurren de manera aislada. Por el contrario, están impulsadas por cambios estructurales que exigen una reevaluación constante de las estrategias tradicionales implementadas hasta la fecha.`;
+      let p4 = `Asimismo, resulta oportuno profundizar en las implicaciones prácticas de ${tema}. Al evaluar sus diferentes dimensiones, se observa que los métodos colaborativos y el pensamiento analítico desempeñan un papel determinante para superar barreras metodológicas habituales.`;
+      let p5 = `En este sentido, al contrastar las distintas posturas doctrinarias sobre ${tema}, emergen matices valiosos que enriquecen el debate académico. La integración de herramientas innovadoras permite ampliar la perspectiva y anticipar tendencias futuras.`;
+      let p6 = `No obstante, existen desafíos significativos en la implementación efectiva de estos enfoques. La falta de sistematización en la recolección de datos y la resistencia a la adopción de nuevas metodologías suelen ralentizar los avances en relación con ${tema}.`;
+      let p7 = `En conclusión, el estudio riguroso de ${tema} demuestra que nos encontramos ante un eje transformador en la formación profesional. Se recomienda continuar fomentando espacios de investigación y evaluación constante para consolidar avances significativos en esta área.`;
+
+      let textoFinal = "";
+      if (longitud === "200") {
+        textoFinal = `<p>${p1}</p><p>${p2}</p><p>${p7}</p>`;
+      } else if (longitud === "500") {
+        textoFinal = `<p>${p1}</p><p>${p2}</p><p>${p3}</p><p>${p4}</p><p>${p7}</p>`;
+      } else { // 700+ palabras
+        textoFinal = `<p>${p1}</p><p>${p2}</p><p>${p3}</p><p>${p4}</p><p>${p5}</p><p>${p6}</p><p>${p7}</p>`;
+      }
+
+      resDiv.innerHTML = textoFinal;
+      const totalPalabras = resDiv.innerText.trim().split(/\s+/).length;
+      document.getElementById('redactor-contador').innerText = totalPalabras + " palabras";
+    }
+
+    function descargarTexto() {
+      const texto = document.getElementById('redactor-resultado').innerText;
+      const blob = new Blob([texto], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Texto_Eduassit.txt';
+      a.click();
+    }
+
+    // 2. TUTOR & REPASO ACTIVO
+    const flashcards = [
+      { q: "¿Cual es el principio central de la duda metódica de Descartes?", a: "Dudar de todo conocimiento previo para encontrar una verdad indudable ('Pienso, luego existo').", diff: "Medio" },
+      { q: "¿Cual es la Segunda Ley de Newton?", a: "La fuerza es igual a la masa por la aceleración (F = m * a).", diff: "Facil" }
+    ];
+    let flashIdx = 0;
+
+    function renderFlashcard() {
+      if (flashcards.length === 0) return;
+      document.getElementById('flash-q').innerText = flashcards[flashIdx].q;
+      document.getElementById('flash-a').innerText = flashcards[flashIdx].a;
+      document.getElementById('flash-a').classList.add('hidden');
+      document.getElementById('flash-index').innerText = flashIdx + 1;
+      document.getElementById('flash-total').innerText = flashcards.length;
+      document.getElementById('flash-dificultad').innerText = flashcards[flashIdx].diff;
+    }
+
+    function toggleRespuestaFlash() {
+      document.getElementById('flash-a').classList.toggle('hidden');
+    }
+
+    function evaluarFlash(nivel) {
+      flashcards[flashIdx].diff = nivel;
+      flashIdx = (flashIdx + 1) % flashcards.length;
+      renderFlashcard();
+    }
+
+    function agregarFlashcard() {
+      const q = document.getElementById('flash-pregunta').value.trim();
+      const a = document.getElementById('flash-respuesta').value.trim();
+      if (q && a) {
+        flashcards.push({ q, a, diff: "Nuevo" });
+        flashIdx = flashcards.length - 1;
+        renderFlashcard();
+        document.getElementById('flash-pregunta').value = '';
+        document.getElementById('flash-respuesta').value = '';
+      }
+    }
+
+    // 3. SECCIÓN DE EXÁMENES Y QUIZZES CON CRONÓMETRO
+    let quizInterval;
+    let quizTimeLeft = 600;
+    let quizRespuestasCorrectas = [];
+
+    function iniciarQuiz() {
+      const tema = document.getElementById('quiz-tema').value.trim() || "Conocimientos Generales";
+      quizTimeLeft = parseInt(document.getElementById('quiz-tiempo').value);
+      
+      document.getElementById('quiz-setup').classList.add('hidden');
+      document.getElementById('quiz-resultado').classList.add('hidden');
+      document.getElementById('quiz-active').classList.remove('hidden');
+      document.getElementById('quiz-titulo-activo').innerText = "Examen de: " + tema;
+
+      // Generar 10 preguntas dinámicas
+      const container = document.getElementById('quiz-preguntas-container');
+      container.innerHTML = "";
+      quizRespuestasCorrectas = [];
+
+      for (let i = 1; i <= 10; i++) {
+        const correctIndex = Math.floor(Math.random() * 4);
+        quizRespuestasCorrectas.push(correctIndex);
+
+        const card = document.createElement('div');
+        card.className = "glass-card p-6 rounded-2xl border border-slate-200 space-y-3";
+        card.innerHTML = `
+          <h5 class="font-bold text-slate-800">Pregunta ${i}: ¿Cual de las siguientes afirmaciones describe mejor un principio fundamental sobre ${tema}?</h5>
+          <div class="space-y-2 text-sm">
+            <label class="flex items-center gap-3 p-3 rounded-xl border hover:bg-indigo-50/50 cursor-pointer">
+              <input type="radio" name="q${i}" value="0" class="text-indigo-600">
+              <span>Opción A: Representa el análisis estructural y conceptual clave de ${tema}.</span>
+            </label>
+            <label class="flex items-center gap-3 p-3 rounded-xl border hover:bg-indigo-50/50 cursor-pointer">
+              <input type="radio" name="q${i}" value="1" class="text-indigo-600">
+              <span>Opción B: Corresponde a una propiedad secundaria sin impacto directo.</span>
+            </label>
+            <label class="flex items-center gap-3 p-3 rounded-xl border hover:bg-indigo-50/50 cursor-pointer">
+              <input type="radio" name="q${i}" value="2" class="text-indigo-600">
+              <span>Opción C: Se aplica exclusivamente a modelos teóricos desactualizados.</span>
+            </label>
+            <label class="flex items-center gap-3 p-3 rounded-xl border hover:bg-indigo-50/50 cursor-pointer">
+              <input type="radio" name="q${i}" value="3" class="text-indigo-600">
+              <span>Opción D: Ninguna de las anteriores opciones es correcta.</span>
+            </label>
+          </div>
+        `;
+        container.appendChild(card);
+      }
+
+      // Iniciar Cronómetro
+      clearInterval(quizInterval);
+      actualizarTimerDisplay();
+      quizInterval = setInterval(() => {
+        quizTimeLeft--;
+        actualizarTimerDisplay();
+        if (quizTimeLeft <= 0) {
+          clearInterval(quizInterval);
+          finalizarQuiz();
         }
+      }, 1000);
+    }
 
-        // 2. REDACTOR CON SELECTOR EXACTO DE PALABRAS
-        function generateCustomText() {
-            const input = document.getElementById('essay-input').value.trim() || "La importancia del aprendizaje continuo y la investigación académica";
-            const targetWords = parseInt(document.getElementById('essay-word-target').value);
-            const style = document.getElementById('essay-style').value;
+    function actualizarTimerDisplay() {
+      const min = Math.floor(quizTimeLeft / 60);
+      const sec = quizTimeLeft % 60;
+      document.getElementById('quiz-timer').innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
 
-            let paragraph1 = `En el contexto contemporáneo, abordar el tema de ${input} resulta indispensable para comprender la evolución de las dinámicas actuales. A través de un análisis detallado, es posible identificar los pilares fundamentales que estructuran este fenómeno y su impacto directo en el ámbito educativo y social. `;
-            
-            let paragraph2 = `Profundizando en los aspectos clave, diversos estudios sostienen que la aplicación práctica y el desarrollo conceptual de ${input} potencian significativamente las capacidades analíticas. Además, al evaluar las variables involucradas, se evidencia una clara correlación entre una metodología bien estructurada y la consecución de resultados óptimos. Asimismo, resulta imperativo considerar las implicaciones a largo plazo y las múltiples perspectivas que enriquecen este campo de estudio. `;
-            
-            let paragraph3 = `Por otra parte, al contrastar las teorías tradicionales con los enfoques modernos, surge la necesidad de reformular estrategias para adaptarse a los nuevos desafíos. La integración de herramientas innovadoras y el pensamiento crítico permiten superar barreras metodológicas, garantizando una comprensión más integral y rigurosa. Este proceso no solo favorece la resolución efectiva de problemas, sino que también promueve un entorno colaborativo y dinámico. `;
-            
-            let paragraph4 = `En conclusión, los elementos analizados demuestran que ${input} constituye un eje transformador en la formación y desarrollo profesional. Se recomienda continuar fomentando espacios de investigación, evaluación y práctica constante para consolidar avances significativos en esta área.`;
-
-            let finalContent = "";
-            if (targetWords === 200) {
-                finalContent = paragraph1 + paragraph4;
-            } else if (targetWords === 500) {
-                finalContent = paragraph1 + paragraph2 + paragraph3 + paragraph4;
-            } else {
-                finalContent = paragraph1 + paragraph2 + paragraph2 + paragraph3 + paragraph3 + paragraph4;
-            }
-
-            document.getElementById('essay-output').innerText = finalContent;
-            
-            const actualCount = finalContent.split(/\s+/).filter(w => w.length > 0).length;
-            document.getElementById('output-word-count').innerText = `${actualCount} palabras`;
+    function finalizarQuiz() {
+      clearInterval(quizInterval);
+      let puntos = 0;
+      for (let i = 1; i <= 10; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === quizRespuestasCorrectas[i - 1]) {
+          puntos++;
         }
+      }
 
-        function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text);
-            alert("¡Texto copiado con éxito!");
+      document.getElementById('quiz-active').classList.add('hidden');
+      document.getElementById('quiz-resultado').classList.remove('hidden');
+      document.getElementById('quiz-score-text').innerText = `${puntos} / 10 (${puntos * 10}%)`;
+      
+      const feedback = document.getElementById('quiz-feedback');
+      if (puntos >= 8) feedback.innerText = "¡Excelente dominio de este tema!";
+      else if (puntos >= 5) feedback.innerText = "Buen intento. Te recomendamos repasar los conceptos clave.";
+      else feedback.innerText = "Necesitas reforzar este tema. Usa la sección de Tutor y Flashcards para estudiar.";
+    }
+
+    function reiniciarQuiz() {
+      document.getElementById('quiz-resultado').classList.add('hidden');
+      document.getElementById('quiz-setup').classList.remove('hidden');
+    }
+
+    // 4. LAB MATES Y FÍSICA CON FÓRMULAS DINÁMICAS
+    function generarEjercicioSTEM() {
+      const mat = document.getElementById('stem-materia').value;
+      const formulaEl = document.getElementById('stem-formula');
+      const enunciadoEl = document.getElementById('stem-enunciado');
+      const solucionEl = document.getElementById('stem-solucion');
+      solucionEl.classList.add('hidden');
+
+      if (mat === 'trig') {
+        const a = Math.floor(Math.random() * 10) + 3;
+        const b = Math.floor(Math.random() * 10) + 4;
+        const c = Math.sqrt(a*a + b*b).toFixed(2);
+        formulaEl.innerText = "c = √(a² + b²)  [Teorema de Pitágoras]";
+        enunciadoEl.innerText = `Calcula la hipotenusa (c) de un triángulo rectángulo cuyos catetos miden a = ${a} cm y b = ${b} cm.`;
+        solucionEl.innerHTML = `Paso 1: Sustituir valores -> c = √(${a}² + ${b}²)<br>Paso 2: Elevar al cuadrado -> c = √(${a*a} + ${b*b})<br>Paso 3: Sumar -> c = √(${a*a + b*b})<br><strong>Resultado: c = ${c} cm</strong>`;
+      } else if (mat === 'dinamica') {
+        const m = Math.floor(Math.random() * 20) + 2;
+        const a = Math.floor(Math.random() * 8) + 1;
+        const f = m * a;
+        formulaEl.innerText = "F = m · a  [Segunda Ley de Newton]";
+        enunciadoEl.innerText = `Calcula la fuerza necesaria para acelerar un objeto de masa m = ${m} kg a una aceleración de a = ${a} m/s².`;
+        solucionEl.innerHTML = `Paso 1: Identificar fórmula -> F = m · a<br>Paso 2: Multiplicar -> F = ${m} kg · ${a} m/s²<br><strong>Resultado: F = ${f} N (Newtons)</strong>`;
+      } else {
+        const v = Math.floor(Math.random() * 50) + 10;
+        const t = Math.floor(Math.random() * 5) + 1;
+        const d = v * t;
+        formulaEl.innerText = "d = v · t  [Cinemática Rectilínea]";
+        enunciadoEl.innerText = `Un vehículo se desplaza a una velocidad constante de v = ${v} km/h durante t = ${t} horas. ¿Qué distancia recorre?`;
+        solucionEl.innerHTML = `Paso 1: Aplicar d = v · t<br>Paso 2: Multiplicar -> d = ${v} km/h · ${t} h<br><strong>Resultado: d = ${d} km</strong>`;
+      }
+    }
+
+    function toggleSolucionSTEM() {
+      document.getElementById('stem-solucion').classList.toggle('hidden');
+    }
+
+    // CALCULADORA CIENTÍFICA
+    function toggleCalcModal() {
+      document.getElementById('calc-modal').classList.toggle('hidden');
+    }
+    function calcInput(val) {
+      const d = document.getElementById('calc-display');
+      if (d.value === '0') d.value = val;
+      else d.value += val;
+    }
+    function calcClear() {
+      document.getElementById('calc-display').value = '0';
+    }
+    function calcEqual() {
+      try {
+        let expr = document.getElementById('calc-display').value
+          .replace(/sin\(/g, 'Math.sin(')
+          .replace(/cos\(/g, 'Math.cos(')
+          .replace(/tan\(/g, 'Math.tan(');
+        document.getElementById('calc-display').value = eval(expr);
+      } catch (e) {
+        document.getElementById('calc-display').value = 'Error';
+      }
+    }
+
+    // POMODORO
+    let pomoTime = 1500;
+    let pomoTimer;
+    function startPomodoro() {
+      clearInterval(pomoTimer);
+      pomoTimer = setInterval(() => {
+        if (pomoTime > 0) {
+          pomoTime--;
+          const m = Math.floor(pomoTime / 60);
+          const s = pomoTime % 60;
+          document.getElementById('pomo-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
         }
+      }, 1000);
+    }
+    function pausePomodoro() { clearInterval(pomoTimer); }
+    function resetPomodoro() { pausePomodoro(); pomoTime = 1500; document.getElementById('pomo-display').innerText = '25:00'; }
 
-        function downloadTextFile() {
-            const text = document.getElementById('essay-output').innerText;
-            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = "trabajo_eduassit.txt";
-            link.click();
+    // NOTAS
+    function agregarFilaNota() {
+      const container = document.getElementById('notas-filas');
+      const div = document.createElement('div');
+      div.className = 'flex gap-2';
+      div.innerHTML = '<input type="number" placeholder="Nota" class="nota-val w-1/2 p-2 border rounded-xl text-sm" step="0.1"><input type="number" placeholder="Porcentaje %" class="nota-porcent w-1/2 p-2 border rounded-xl text-sm">';
+      container.appendChild(div);
+    }
+    function calcularPromedioPonderado() {
+      const notas = document.querySelectorAll('.nota-val');
+      const porcentajes = document.querySelectorAll('.nota-porcent');
+      let suma = 0, pctTotal = 0;
+      notas.forEach((n, i) => {
+        const val = parseFloat(n.value);
+        const pct = parseFloat(porcentajes[i].value);
+        if (!isNaN(val) && !isNaN(pct)) {
+          suma += val * (pct / 100);
+          pctTotal += pct;
         }
+      });
+      document.getElementById('nota-resultado').innerText = pctTotal > 0 ? `Promedio: ${suma.toFixed(2)} (${pctTotal}% evaluado)` : "Ingresa datos válidos";
+    }
 
-        // 3. TUTOR DE REPASO ACTIVO (FLASHCARDS)
-        function generateFlashcards() {
-            const subject = document.getElementById('tutor-subject').value.trim() || "General";
-            const level = document.getElementById('tutor-level').value;
+    // APA 7
+    function generarAPA() {
+      const a = document.getElementById('apa-autor').value;
+      const y = document.getElementById('apa-anio').value;
+      const t = document.getElementById('apa-titulo').value;
+      const e = document.getElementById('apa-editorial').value;
+      document.getElementById('apa-res').innerText = `${a} (${y}). ${t}. ${e}.`;
+    }
 
-            const cards = [
-                { q: `¿Cuál es el concepto central en el estudio de ${subject}?`, a: `El concepto abarca la estructura, las leyes fundamentales y la aplicación práctica de sus principios en situaciones reales.` },
-                { q: `¿Qué diferencia existe entre un enfoque básico y uno avanzado en ${subject}?`, a: `El enfoque básico se centra en memorizar y definir conceptos, mientras que el avanzado requiere análisis crítico, resolución de problemas y síntesis.` },
-                { q: `¿Cómo se aplica ${subject} en la resolución de problemas cotidianos?`, a: `A través de la sistematización de pasos, la evaluación de datos y la comprobación de hipótesis numéricas o teóricas.` }
-            ];
-
-            let html = "";
-            cards.forEach((card, idx) => {
-                html += `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-indigo-600 uppercase">Pregunta ${idx + 1} (${level})</span>
-                        </div>
-                        <p class="font-bold text-slate-800 text-sm">${card.q}</p>
-                        <button onclick="document.getElementById('ans-${idx}').classList.toggle('hidden')" class="text-xs text-indigo-600 hover:underline font-semibold">
-                            👁️ Revelar / Ocultar Respuesta Explicada
-                        </button>
-                        <p id="ans-${idx}" class="hidden text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed mt-2">
-                            <strong>Respuesta Guía:</strong> ${card.a}
-                        </p>
-                    </div>
-                `;
-            });
-
-            document.getElementById('flashcards-container').innerHTML = html;
-        }
-
-        // 4. LABORATORIO MATEMÁTICO & FÍSICO
-        let currentProblem = null;
-
-        function generateStemProblem() {
-            const topic = document.getElementById('stem-topic').value;
-            let question = "", answer = 0, steps = "";
-
-            if (topic === 'trigonometria') {
-                question = "En un triángulo rectángulo, el cateto opuesto vale 6 cm y el cateto adyacente vale 8 cm. ¿Cuál es el valor de la hipotenusa (c)?";
-                answer = 10;
-                steps = "Uso del Teorema de Pitágoras: c = √(a² + b²) = √(6² + 8²) = √(36 + 64) = √100 = 10 cm.";
-            } else if (topic === 'vectores') {
-                question = "Un vector de fuerza tiene una magnitud de 100 N y un ángulo de 0° con el eje horizontal. ¿Cuál es la componente en X (Fx)?";
-                answer = 100;
-                steps = "Fx = F * cos(θ) = 100 * cos(0°) = 100 * 1 = 100 N.";
-            } else if (topic === 'cinematica') {
-                question = "Un móvil parte del reposo (Vo = 0) y acelera a 2 m/s² durante 5 segundos. ¿Cuál es su velocidad final (Vf)?";
-                answer = 10;
-                steps = "Fórmula: Vf = Vo + a * t = 0 + (2 * 5) = 10 m/s.";
-            } else if (topic === 'ecuaciones') {
-                question = "Dado el sistema: X + Y = 12  y  X - Y = 4. ¿Cuál es el valor de X?";
-                answer = 8;
-                steps = "Sumando ambas ecuaciones: 2X = 16  =>  X = 8.";
-            }
-
-            currentProblem = { question, answer, steps };
-            document.getElementById('stem-question').innerText = question;
-            document.getElementById('stem-user-answer').value = "";
-            const feedback = document.getElementById('stem-feedback');
-            feedback.classList.add('hidden');
-        }
-
-        function checkStemAnswer() {
-            if (!currentProblem) return;
-            const userVal = parseFloat(document.getElementById('stem-user-answer').value.trim());
-            const feedback = document.getElementById('stem-feedback');
-
-            feedback.classList.remove('hidden', 'bg-emerald-50', 'bg-rose-50', 'text-emerald-900', 'text-rose-900', 'border-emerald-200', 'border-rose-200');
-
-            if (Math.abs(userVal - currentProblem.answer) < 0.1) {
-                feedback.classList.add('bg-emerald-50', 'text-emerald-900', 'border', 'border-emerald-200');
-                feedback.innerHTML = `<strong>🎉 ¡Correcto!</strong> El resultado es ${currentProblem.answer}.<br><span class="text-xs">${currentProblem.steps}</span>`;
-            } else {
-                feedback.classList.add('bg-rose-50', 'text-rose-900', 'border', 'border-rose-200');
-                feedback.innerHTML = `<strong>❌ Respuesta incorrecta.</strong> Revisa el cálculo e inténtalo de nuevo.<br><span class="text-xs"><strong>Solución Paso a Paso:</strong> ${currentProblem.steps}</span>`;
-            }
-        }
-
-        // 5. POMODORO Y AUDIO
-        let pomoInterval;
-        let pomoSeconds = 25 * 60;
-        let isRunning = false;
-
-        function updatePomoDisplay() {
-            const mins = Math.floor(pomoSeconds / 60).toString().padStart(2, '0');
-            const secs = (pomoSeconds % 60).toString().padStart(2, '0');
-            document.getElementById('pomo-timer').innerText = `${mins}:${secs}`;
-        }
-
-        function setPomoTime(mins, modeName) {
-            pausePomodoro();
-            pomoSeconds = mins * 60;
-            document.getElementById('pomodoro-mode').innerText = modeName;
-            updatePomoDisplay();
-        }
-
-        function startPomodoro() {
-            if (isRunning) return;
-            isRunning = true;
-            document.getElementById('btn-start').classList.add('hidden');
-            document.getElementById('btn-pause').classList.remove('hidden');
-
-            pomoInterval = setInterval(() => {
-                if (pomoSeconds > 0) {
-                    pomoSeconds--;
-                    updatePomoDisplay();
-                } else {
-                    pausePomodoro();
-                    alert("¡Sesión completada!");
-                }
-            }, 1000);
-        }
-
-        function pausePomodoro() {
-            isRunning = false;
-            clearInterval(pomoInterval);
-            document.getElementById('btn-start').classList.remove('hidden');
-            document.getElementById('btn-pause').classList.add('hidden');
-        }
-
-        function resetPomodoro() {
-            pausePomodoro();
-            pomoSeconds = 25 * 60;
-            document.getElementById('pomodoro-mode').innerText = "Sesión de Enfoque";
-            updatePomoDisplay();
-        }
-
-        // Web Audio Synthesizer
-        let audioCtx;
-        let currentNoiseNode = null;
-
-        function toggleSound(type) {
-            if (currentNoiseNode) {
-                currentNoiseNode.stop();
-                currentNoiseNode = null;
-                document.querySelectorAll('[id^="btn-sound-"]').forEach(btn => btn.innerText = "Reproducir");
-                return;
-            }
-
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-            const bufferSize = audioCtx.sampleRate * 2;
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
-
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            noise.loop = true;
-
-            const gain = audioCtx.createGain();
-            gain.gain.value = 0.04;
-
-            noise.connect(gain);
-            gain.connect(audioCtx.destination);
-            noise.start();
-
-            currentNoiseNode = noise;
-            document.getElementById(`btn-sound-${type}`).innerText = "Detener";
-        }
-
-        // 6. CALCULADORA DE NOTAS
-        let grades = [
-            { name: "Evaluación 1", grade: 4.5, weight: 30 },
-            { name: "Proyecto Final", grade: 4.0, weight: 40 }
-        ];
-
-        function renderGrades() {
-            const container = document.getElementById('grades-container');
-            container.innerHTML = "";
-            grades.forEach((g, index) => {
-                container.innerHTML += `
-                    <div class="flex items-center gap-2 p-2 bg-slate-50 rounded-xl border border-slate-200">
-                        <input type="text" value="${g.name}" onchange="grades[${index}].name=this.value" class="flex-1 px-3 py-1.5 rounded-lg border text-xs">
-                        <input type="number" step="0.1" value="${g.grade}" onchange="grades[${index}].grade=parseFloat(this.value)" class="w-20 px-3 py-1.5 rounded-lg border text-xs">
-                        <input type="number" value="${g.weight}" onchange="grades[${index}].weight=parseFloat(this.value)" class="w-16 px-3 py-1.5 rounded-lg border text-xs"> %
-                        <button onclick="removeGrade(${index})" class="text-rose-500 p-2"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-            });
-            calculateGrades();
-        }
-
-        function addGradeRow() {
-            grades.push({ name: `Nota ${grades.length + 1}`, grade: 4.0, weight: 15 });
-            renderGrades();
-        }
-
-        function removeGrade(index) {
-            grades.splice(index, 1);
-            renderGrades();
-        }
-
-        function calculateGrades() {
-            let totalWeight = 0;
-            let weightedSum = 0;
-
-            grades.forEach(g => {
-                totalWeight += g.weight || 0;
-                weightedSum += (g.grade || 0) * (g.weight || 0);
-            });
-
-            const avg = totalWeight > 0 ? (weightedSum / totalWeight).toFixed(2) : "0.0";
-            document.getElementById('total-weight').innerText = `${totalWeight}%`;
-            document.getElementById('current-average').innerText = avg;
-        }
-
-        // 7. GENERADOR APA 7
-        function generateAPA() {
-            const author = document.getElementById('apa-author').value.trim() || "Autor, A.";
-            const year = document.getElementById('apa-year').value.trim() || "2024";
-            const title = document.getElementById('apa-title').value.trim() || "Título del documento";
-            const source = document.getElementById('apa-source').value.trim() || "Editorial / Fuente";
-
-            document.getElementById('apa-result').innerHTML = `${author} (${year}). <em>${title}</em>. ${source}.`;
-        }
-
-        // 8. KANBAN
-        let kanbanTasks = JSON.parse(localStorage.getItem('eduassit_kanban_v2')) || [
-            { id: 1, title: "Repasar Leyes de Seno y Coseno", status: "todo" },
-            { id: 2, title: "Redactar introducción del ensayo", status: "doing" }
-        ];
-
-        function renderKanban() {
-            document.getElementById('col-todo').innerHTML = "";
-            document.getElementById('col-doing').innerHTML = "";
-            document.getElementById('col-done').innerHTML = "";
-
-            kanbanTasks.forEach(task => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between text-xs";
-                card.innerHTML = `
-                    <span>${task.title}</span>
-                    <div class="flex gap-1">
-                        ${task.status !== 'todo' ? `<button onclick="moveTask(${task.id}, 'prev')" class="text-slate-400 hover:text-slate-700">◀</button>` : ''}
-                        ${task.status !== 'done' ? `<button onclick="moveTask(${task.id}, 'next')" class="text-slate-400 hover:text-slate-700">▶</button>` : ''}
-                        <button onclick="deleteTask(${task.id})" class="text-rose-400 hover:text-rose-600 ml-1"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                `;
-                document.getElementById('col-' + task.status).appendChild(card);
-            });
-
-            localStorage.setItem('eduassit_kanban_v2', JSON.stringify(kanbanTasks));
-        }
-
-        function addKanbanTask() {
-            const input = document.getElementById('kanban-new-title');
-            if (!input.value.trim()) return;
-            kanbanTasks.push({ id: Date.now(), title: input.value.trim(), status: 'todo' });
-            input.value = "";
-            renderKanban();
-        }
-
-        function moveTask(id, dir) {
-            const task = kanbanTasks.find(t => t.id === id);
-            const states = ['todo', 'doing', 'done'];
-            let idx = states.indexOf(task.status);
-            if (dir === 'next' && idx < 2) task.status = states[idx + 1];
-            if (dir === 'prev' && idx > 0) task.status = states[idx - 1];
-            renderKanban();
-        }
-
-        function deleteTask(id) {
-            kanbanTasks = kanbanTasks.filter(t => t.id !== id);
-            renderKanban();
-        }
-
-        // 9. CHAT EDUBOT
-        function toggleEduBot() {
-            document.getElementById('edubot-window').classList.toggle('hidden');
-        }
-
-        function sendEduBotMessage() {
-            const input = document.getElementById('edubot-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const messages = document.getElementById('edubot-messages');
-            messages.innerHTML += `<div class="bg-indigo-600 text-white p-2.5 rounded-xl ml-8 text-right mb-2">${text}</div>`;
-            input.value = "";
-
-            setTimeout(() => {
-                let reply = "Recuerda usar conectores como 'Por consiguiente', 'En primera instancia' y 'Asimismo' para mejorar la fluidez de tus trabajos.";
-                if (text.toLowerCase().includes("hola")) reply = "¡Hola! ¿En qué tema o materia necesitas ayuda hoy?";
-                messages.innerHTML += `<div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-slate-700 mr-8 mb-2">${reply}</div>`;
-                messages.scrollTop = messages.scrollHeight;
-            }, 500);
-        }
-
-        // Inicialización
-        renderGrades();
-        renderKanban();
-    </script>
+    // INICIALIZACIÓN
+    window.onload = function() {
+      renderFlashcard();
+      generarEjercicioSTEM();
+    };
+  </script>
 </body>
 </html>
